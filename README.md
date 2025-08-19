@@ -6,29 +6,33 @@
 
 constexpr unsigned short some_error_code = 1111;
 
-Err(int) returning_an_int_error_union() {
-    return false ? ok(41) : err(int)(some_error_code); // ok infers the type
+Err(int) returning_an_int_error_union(bool yes) {
+    if (yes) return ok(41); // ok infers the type
+    return err(int)(some_error_code);
 }
 
-Opt(char*) returning_a_string_optional() {
-    return true ? val(":^)") : null(char*); // same for optionals
+Opt(char*) returning_a_string_optional(bool yes) {
+    if (yes) return val(":^)"); // same for optionals
+    return null(char*);
 }
 
 Err() checking_the_results() { // no argument means void
-    Err(int) int_or_err = returning_an_int_error_union();
+    Err(int) int_or_err = returning_an_int_error_union(true);
     if (failed(int_or_err)) {
         unsigned short error = check(int_or_err);
         return err()(error);
-    } else printf("int = %d\n", unwrap(int_or_err));
+    } else {
+        printf("int = %d\n", unwrap(int_or_err));
+    }
 
-    Opt(char*) string_or_null = returning_a_string_optional();
+    Opt(char*) string_or_null = returning_a_string_optional(true);
     char* text = absent(string_or_null) ? "bbbb" : unwrap(string_or_null);
 
     return ok();
 }
 
 Err(int) returning_some_error_union() {
-    return returning_an_int_error_union(); // returning works as expected
+    return returning_an_int_error_union(true); // returning works as expected
 }
 
 Err(bool) using_the_try_expression() {
