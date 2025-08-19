@@ -311,8 +311,7 @@
 // #endregion
 
 // #region generic selection
-// i means index
-#define _euo_ErrUnion_i(i) _euo_cat(_euo_ErrUnion_, i)
+#define _euo_ErrUnion_i(i) _euo_cat(_euo_ErrUnion_, i) // i means index
 #define _euo_Optional_i(i) _euo_cat(_euo_Optional_, i)
 #define _euo_ok_i(i) _euo_cat(_euo_ok_, i)
 #define _euo_err_i(i) _euo_cat(_euo_err_, i)
@@ -491,7 +490,6 @@
     _euo_declare_unwrap_err_union(i, T) _euo_declare_unwrap_optional(i, T) \
     _euo_declare_check(i)
 // clang-format on
-
 // #endregion
 
 // #region library interface
@@ -503,7 +501,7 @@
 #if !defined euo_types || _euo_is_empty(euo_types)
     #define _euo_types _euo_Void
 #else
-    #define _euo_types _euo_Void _euo_with_comma(euo_types) // at most 255 types
+    #define _euo_types _euo_Void _euo_with_comma(euo_types)
 #endif
 
 #if !defined euo_error_type || _euo_is_empty(euo_error_type)
