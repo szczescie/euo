@@ -1,5 +1,6 @@
 ```c
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ usage ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 #define euo_types char, int, long, float, double, bool, char*
 #include "euo.h" // default error code type is unsigned short
 
@@ -18,9 +19,7 @@ Err() checking_the_results() { // no argument means void
     if (failed(int_or_err)) {
         unsigned short error = check(int_or_err);
         return err()(error);
-    } else {
-        printf("int = %d\n", unwrap(int_or_err));
-    }
+    } else printf("int = %d\n", unwrap(int_or_err));
 
     Opt(char*) string_or_null = returning_a_string_optional();
     char* text = absent(string_or_null) ? "bbbb" : unwrap(string_or_null);
@@ -41,6 +40,7 @@ Err(bool) using_the_try_expression() {
 
 ```c
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+
 typedef enum { overflow, access_denied, unexpected } Error;
 
 #define euo_error_type Error
