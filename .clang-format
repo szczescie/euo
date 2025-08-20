@@ -1,0 +1,6 @@
+AlignAfterOpenBracket: BlockIndent
+ColumnLimit: 0
+Cpp11BracedListStyle: false
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+PointerAlignment: Left

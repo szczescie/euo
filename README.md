@@ -58,8 +58,7 @@ euo_Err(double) returning_a_double_error_union() {
 
 euo_Err() assigning_an_optional() {
     auto some_int = euo_null(int);
-    auto another_int = euo_val(100);
-    some_int = another_int = euo_val(1234);
+    some_int = euo_val(1234);
 
     // now unwrap will use unreachable() instead of asserting
     printf("int = %d\n", euo_unwrap(some_int));
