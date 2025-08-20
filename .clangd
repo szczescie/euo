@@ -4,6 +4,8 @@ CompileFlags:
     Add:
         - -std=c23
         - -Weverything
+        - -pedantic-errors
+        - -Wno-c++98-compat
         - -Wno-pre-c11-compat
         - -Wno-pre-c23-compat
         - -Wno-declaration-after-statement
