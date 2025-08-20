@@ -313,30 +313,52 @@
 // #region generic selection
 #define _euo_ErrUnion_i(i) _euo_cat(_euo_ErrUnion_, i) // i means index
 #define _euo_Optional_i(i) _euo_cat(_euo_Optional_, i)
+#define _euo_ErrOpt_i(i) _euo_cat(_euo_ErrOpt_, i)
 #define _euo_ok_i(i) _euo_cat(_euo_ok_, i)
+#define _euo_ok_opt_i(i) _euo_cat(_euo_ok_opt_, i)
 #define _euo_err_i(i) _euo_cat(_euo_err_, i)
+#define _euo_err_opt_i(i) _euo_cat(_euo_err_opt_, i)
 #define _euo_val_i(i) _euo_cat(_euo_val_, i)
 #define _euo_null_i(i) _euo_cat(_euo_null_, i)
 #define _euo_failed_i(i) _euo_cat(_euo_failed_, i)
+#define _euo_failed_opt_i(i) _euo_cat(_euo_failed_opt_, i)
 #define _euo_absent_i(i) _euo_cat(_euo_absent_, i)
 #define _euo_unwrap_err_union_i(i) _euo_cat(_euo_unwrap_err_union_, i)
+#define _euo_unwrap_err_union_opt_i(i) _euo_cat(_euo_unwrap_err_union_opt_, i)
 #define _euo_unwrap_optional_i(i) _euo_cat(_euo_unwrap_optional_, i)
 #define _euo_check_i(i) _euo_cat(_euo_check_, i)
+#define _euo_check_opt_i(i) _euo_cat(_euo_check_opt_, i)
 
 // clang-format off
-#define _euo_generic_err_union(i, T) , T: (_euo_ErrUnion_i(i)){}
-#define _euo_generic_optional(i, T) , T: (_euo_Optional_i(i)){}
-#define _euo_generic_ok(i, T) , T: _euo_ok_i(i)
-#define _euo_generic_err(i, T) , T: _euo_err_i(i)
-#define _euo_generic_val(i, T) , T: _euo_val_i(i)
-#define _euo_generic_null(i, T) , T: _euo_null_i(i)
-#define _euo_generic_failed(i, _) , _euo_ErrUnion_i(i): _euo_failed_i(i)
-#define _euo_generic_absent(i, _) , _euo_Optional_i(i): _euo_absent_i(i)
-#define _euo_generic_unwrap_err_union(i, _) \
-    , _euo_ErrUnion_i(i): _euo_unwrap_err_union_i(i)
+// #define _euo_generic_err_union(i, T) , T: (_euo_ErrUnion_i(i)){}
+#define _euo_generic_err_union(i, T) \
+    , T: (_euo_ErrUnion_i(i)){}      \
+    , _euo_Optional_i(i): (_euo_ErrOpt_i(i)){}
+#define _euo_generic_optional(i, T) \
+    , T: (_euo_Optional_i(i)){}
+#define _euo_generic_ok(i, T) \
+    , T: _euo_ok_i(i)         \
+    , _euo_Optional_i(i): _euo_ok_opt_i(i)
+#define _euo_generic_err(i, T) \
+    , T: _euo_err_i(i)         \
+    , _euo_Optional_i(i): _euo_err_opt_i(i)
+#define _euo_generic_val(i, T) \
+    , T: _euo_val_i(i)
+#define _euo_generic_null(i, T) \
+    , T: _euo_null_i(i)
+#define _euo_generic_failed(i, _)          \
+    , _euo_ErrUnion_i(i): _euo_failed_i(i) \
+    , _euo_ErrOpt_i(i): _euo_failed_opt_i(i)
+#define _euo_generic_absent(i, _) \
+    , _euo_Optional_i(i): _euo_absent_i(i)
+#define _euo_generic_unwrap_err_union(i, _)          \
+    , _euo_ErrUnion_i(i): _euo_unwrap_err_union_i(i) \
+    , _euo_ErrOpt_i(i): _euo_unwrap_err_union_opt_i(i)
 #define _euo_generic_unwrap_optional(i, _) \
     , _euo_Optional_i(i): _euo_unwrap_optional_i(i)
-#define _euo_generic_check(i, _) , _euo_ErrUnion_i(i): _euo_check_i(i)
+#define _euo_generic_check(i, _)          \
+    , _euo_ErrUnion_i(i): _euo_check_i(i) \
+    , _euo_ErrOpt_i(i): _euo_check_opt_i(i)
 // clang-format on
 
 #define _euo_arity_short_inner(_0, _1, count, ...) count
@@ -403,6 +425,12 @@
         bool null_active;                             \
         T payload;                                    \
     } _euo_Optional_i(i);
+
+#define _euo_declare_err_union_opt(i, T)                                   \
+    typedef struct [[nodiscard]] _euo_ErrOpt_i(i) {                        \
+        bool error_active;                                                 \
+        union { _euo_Optional_i(i) value; _euo_ErrorCode error; } payload; \
+    } _euo_ErrOpt_i(i);
 // clang-format on
 
 #define _euo_declare_ok(i, T)                               \
@@ -414,6 +442,17 @@
         };                                                  \
     }
 
+// clang-format off
+#define _euo_declare_ok_opt(i, T)                                              \
+    [[gnu::const, maybe_unused]]                                               \
+    static _euo_ErrOpt_i(i) _euo_ok_opt_i(i)(_euo_Optional_i(i) const value) { \
+        return (_euo_ErrOpt_i(i)){                                             \
+            .error_active = false,                                             \
+            .payload = { .value = value }                                      \
+        };                                                                     \
+    }
+// clang-format on
+
 #define _euo_declare_err(i)                                               \
     [[gnu::const, maybe_unused]]                                          \
     static _euo_ErrUnion_i(i) _euo_err_i(i)(_euo_ErrorCode const error) { \
@@ -421,6 +460,15 @@
             .error_active = true,                                         \
             .payload = { .error = error }                                 \
         };                                                                \
+    }
+
+#define _euo_declare_err_opt(i)                                             \
+    [[gnu::const, maybe_unused]]                                            \
+    static _euo_ErrOpt_i(i) _euo_err_opt_i(i)(_euo_ErrorCode const error) { \
+        return (_euo_ErrOpt_i(i)){                                          \
+            .error_active = true,                                           \
+            .payload = { .error = error }                                   \
+        };                                                                  \
     }
 
 #define _euo_declare_val(i, T)                               \
@@ -446,6 +494,12 @@
         return __builtin_expect(err_union.error_active, false);        \
     }
 
+#define _euo_declare_failed_opt(i)                                       \
+    [[gnu::const, maybe_unused, nodiscard]]                              \
+    static bool _euo_failed_opt_i(i)(_euo_ErrOpt_i(i) const err_union) { \
+        return __builtin_expect(err_union.error_active, false);          \
+    }
+
 #define _euo_declare_absent(i)                                        \
     [[gnu::const, maybe_unused, nodiscard]]                           \
     static bool _euo_absent_i(i)(_euo_Optional_i(i) const optional) { \
@@ -461,6 +515,18 @@
         _euo_assert(value_field_is_active);                              \
         return err_union.payload.value;                                  \
     }
+
+// clang-format off
+#define _euo_declare_unwrap_err_union_opt(i, T)                              \
+    [[gnu::const, maybe_unused, nodiscard]]                                  \
+    static _euo_Optional_i(i) _euo_unwrap_err_union_opt_i(i)(                \
+        _euo_ErrOpt_i(i) const err_union                                     \
+    ) {                                                                      \
+        bool const value_field_is_active = !_euo_failed_opt_i(i)(err_union); \
+        _euo_assert(value_field_is_active);                                  \
+        return err_union.payload.value;                                      \
+    }
+// clang-format on
 
 #define _euo_declare_unwrap_optional(i, T)                              \
     [[gnu::const, maybe_unused, nodiscard]]                             \
@@ -481,14 +547,34 @@
         return err_union.payload.error;                              \
     }
 
+#define _euo_declare_check_opt(i)                                    \
+    [[gnu::const, maybe_unused, nodiscard]]                          \
+    static _euo_ErrorCode _euo_check_opt_i(i)(                       \
+        _euo_ErrOpt_i(i) const err_union                             \
+    ) {                                                              \
+        _euo_assert(__builtin_expect(err_union.error_active, true)); \
+        return err_union.payload.error;                              \
+    }
+
 // clang-format off
-#define _euo_declare(i, T)                                                 \
-    _euo_declare_err_union(i, T)        _euo_declare_optional(i, T)        \
-    _euo_declare_ok(i, T)               _euo_declare_err(i)                \
-    _euo_declare_val(i, T)              _euo_declare_null(i)               \
-    _euo_declare_failed(i)              _euo_declare_absent(i)             \
-    _euo_declare_unwrap_err_union(i, T) _euo_declare_unwrap_optional(i, T) \
-    _euo_declare_check(i)
+#define _euo_declare(i, T)                  \
+    _euo_declare_err_union(i, T)            \
+    _euo_declare_optional(i, T)             \
+    _euo_declare_err_union_opt(i, T)        \
+    _euo_declare_ok(i, T)                   \
+    _euo_declare_ok_opt(i, T)               \
+    _euo_declare_err(i)                     \
+    _euo_declare_err_opt(i)                 \
+    _euo_declare_val(i, T)                  \
+    _euo_declare_null(i)                    \
+    _euo_declare_failed(i)                  \
+    _euo_declare_failed_opt(i)              \
+    _euo_declare_absent(i)                  \
+    _euo_declare_unwrap_err_union(i, T)     \
+    _euo_declare_unwrap_err_union_opt(i, T) \
+    _euo_declare_unwrap_optional(i, T)      \
+    _euo_declare_check(i)                   \
+    _euo_declare_check_opt(i)
 // clang-format on
 // #endregion
 
