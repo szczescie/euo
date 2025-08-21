@@ -690,7 +690,7 @@ typedef struct _euo_Void {
 #endif
 } _euo_Void;
 
-typedef enum _euo_Tag {
+typedef enum _euo_Tag : unsigned char {
     _euo_tag_value,
     _euo_tag_null,
     _euo_tag_error,
