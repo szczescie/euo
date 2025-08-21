@@ -415,20 +415,20 @@
 // clang-format off
 #define _euo_declare_err_union(i, T)                      \
     typedef struct [[nodiscard]] _euo_ErrUnion_i(i) {     \
-        bool error_active : 1;                            \
+        bool error_active;                                \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrUnion_i(i);
 
 #define _euo_declare_optional(i, T)                   \
     typedef struct [[nodiscard]] _euo_Optional_i(i) { \
-        bool null_active : 1;                         \
+        bool null_active;                             \
         T value;                                      \
     } _euo_Optional_i(i);
 
 #define _euo_declare_err_union_opt(i, T)                  \
     typedef struct [[nodiscard]] _euo_ErrOpt_i(i) {       \
-        bool error_active : 1;                            \
-        bool null_active : 1;                             \
+        bool error_active;                                \
+        bool null_active;                                 \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrOpt_i(i);
 // clang-format on
