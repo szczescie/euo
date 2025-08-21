@@ -330,7 +330,6 @@
 #define _euo_check_opt_i(i) _euo_cat(_euo_check_opt_, i)
 
 // clang-format off
-// #define _euo_generic_err_union(i, T) , T: (_euo_ErrUnion_i(i)){}
 #define _euo_generic_err_union(i, T) \
     , T: (_euo_ErrUnion_i(i)){}      \
     , _euo_Optional_i(i): (_euo_ErrOpt_i(i)){}
@@ -416,19 +415,20 @@
 // clang-format off
 #define _euo_declare_err_union(i, T)                      \
     typedef struct [[nodiscard]] _euo_ErrUnion_i(i) {     \
-        bool error_active;                                \
+        bool error_active : 1;                            \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrUnion_i(i);
 
 #define _euo_declare_optional(i, T)                   \
     typedef struct [[nodiscard]] _euo_Optional_i(i) { \
-        bool null_active;                             \
-        T payload;                                    \
+        bool null_active : 1;                         \
+        T value;                                      \
     } _euo_Optional_i(i);
 
 #define _euo_declare_err_union_opt(i, T)                  \
     typedef struct [[nodiscard]] _euo_ErrOpt_i(i) {       \
-        _euo_Tag tag;                                     \
+        bool error_active : 1;                            \
+        bool null_active : 1;                             \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrOpt_i(i);
 // clang-format on
@@ -451,8 +451,9 @@
         _euo_Optional_i(i) const optional            \
     ) {                                              \
         return (_euo_ErrOpt_i(i)){                   \
-            .tag = (_euo_Tag)optional.null_active,   \
-            .payload = { .value = optional.payload } \
+            .error_active = false,                   \
+            .null_active = optional.null_active,     \
+            .payload = { .value = optional.value }   \
         };                                           \
     }
 // clang-format on
@@ -474,7 +475,7 @@
         _euo_ErrorCode const error                    \
     ) {                                               \
         return (_euo_ErrOpt_i(i)){                    \
-            .tag = _euo_tag_error,                    \
+            .error_active = true,                     \
             .payload = { .error = error }             \
         };                                            \
     }
@@ -486,7 +487,7 @@
     ) {                                             \
         return (_euo_Optional_i(i)){                \
             .null_active = false,                   \
-            .payload = value                        \
+            .value = value                          \
         };                                          \
     }
 
@@ -506,12 +507,12 @@
         return __builtin_expect(err_union.error_active, false); \
     }
 
-#define _euo_declare_failed_opt(i)                                          \
-    [[gnu::const, maybe_unused, nodiscard]]                                 \
-    static inline bool _euo_failed_opt_i(i)(                                \
-        _euo_ErrOpt_i(i) const err_optional                                 \
-    ) {                                                                     \
-        return __builtin_expect(err_optional.tag == _euo_tag_error, false); \
+#define _euo_declare_failed_opt(i)                                 \
+    [[gnu::const, maybe_unused, nodiscard]]                        \
+    static inline bool _euo_failed_opt_i(i)(                       \
+        _euo_ErrOpt_i(i) const err_optional                        \
+    ) {                                                            \
+        return __builtin_expect(err_optional.error_active, false); \
     }
 
 #define _euo_declare_absent(i)                                \
@@ -542,8 +543,8 @@
             !_euo_failed_opt_i(i)(err_optional);                     \
         _euo_assert(error_field_is_not_active);                      \
         return (_euo_Optional_i(i)){                                 \
-            .null_active = (bool)err_optional.tag,                   \
-            .payload = err_optional.payload.value                    \
+            .null_active = err_optional.null_active,                 \
+            .value = err_optional.payload.value                      \
         };                                                           \
     }
 // clang-format on
@@ -555,7 +556,7 @@
     ) {                                                                 \
         bool const value_field_is_active = !_euo_absent_i(i)(optional); \
         _euo_assert(value_field_is_active);                             \
-        return optional.payload;                                        \
+        return optional.value;                                          \
     }
 
 #define _euo_declare_check(i)                               \
@@ -569,15 +570,15 @@
         return err_union.payload.error;                     \
     }
 
-#define _euo_declare_check_opt(i)                                       \
-    [[gnu::const, maybe_unused, nodiscard]]                             \
-    static inline _euo_ErrorCode _euo_check_opt_i(i)(                   \
-        _euo_ErrOpt_i(i) const err_optional                             \
-    ) {                                                                 \
-        bool const error_field_is_active =                              \
-            __builtin_expect(err_optional.tag == _euo_tag_error, true); \
-        _euo_assert(error_field_is_active);                             \
-        return err_optional.payload.error;                              \
+#define _euo_declare_check_opt(i)                              \
+    [[gnu::const, maybe_unused, nodiscard]]                    \
+    static inline _euo_ErrorCode _euo_check_opt_i(i)(          \
+        _euo_ErrOpt_i(i) const err_optional                    \
+    ) {                                                        \
+        bool const error_field_is_active =                     \
+            __builtin_expect(err_optional.error_active, true); \
+        _euo_assert(error_field_is_active);                    \
+        return err_optional.payload.error;                     \
     }
 
 // clang-format off
@@ -662,19 +663,22 @@
     #endif
 #endif
 
+// clang-format off
 #if !_euo_flag(pedantic)
-    #define _euo_try_arity_1(T) ({ \
-        typedef T _euo_T;          \
-        _euo_try_inner
-    #define _euo_try_inner(err_union)                            \
-        auto const _euo_err_union = (err_union);                 \
-        if (_euo_failed(_euo_err_union))                         \
-            return _euo_err(_euo_T)(_euo_check(_euo_err_union)); \
-        _euo_unwrap(_euo_err_union);                             \
+    #define _euo_try_arity_1(T) \
+        ({                      \
+            typedef T _euo_T;   \
+            _euo_try_inner
+    #define _euo_try_inner(err_union)                                \
+            auto const _euo_err_union = (err_union);                 \
+            if (_euo_failed(_euo_err_union))                         \
+                return _euo_err(_euo_T)(_euo_check(_euo_err_union)); \
+            _euo_unwrap(_euo_err_union);                             \
         })
     #define _euo_try_arity_0() _euo_try_arity_1(_euo_Void)
     #define _euo_try(...) _euo_arity_call(_euo_try_arity_, __VA_ARGS__)
 #endif
+// clang-format on
 
 #if _euo_flag(no_assert) || defined NDEBUG
     #define _euo_assert(ok) ((ok) ? (void)0 : __builtin_unreachable())
@@ -689,11 +693,5 @@ typedef struct _euo_Void {
     bool _;
 #endif
 } _euo_Void;
-
-typedef enum _euo_Tag : unsigned char {
-    _euo_tag_value,
-    _euo_tag_null,
-    _euo_tag_error,
-} _euo_Tag;
 
 _euo_map(_euo_declare, _euo_types)

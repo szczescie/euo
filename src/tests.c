@@ -4,12 +4,7 @@
 #define euo_types int, long, char const*, short*, bool
 #include "euo.h"
 
-#define cat_inner(a, b) a##b
-#define cat(a, b) _euo_cat_inner(a, b)
-#define do_not_optimise_away(...) \
-    [[maybe_unused]] auto const volatile cat(_, __COUNTER__) = (__VA_ARGS__)
-
-[[gnu::const]] static Err(long) err_union() {
+static Err(long) err_union() {
     static_assert(sizeof(Err(long)) == 2 * sizeof(long));
     {
         Err(int) const int_or_err = ok(-0xaaaaaaa);
@@ -27,7 +22,7 @@
     }
 }
 
-[[gnu::const]] static Opt(short*) optional() {
+static Opt(short*) optional() {
     static_assert(sizeof(Err(short*)) == 2 * sizeof(short*));
     {
         Opt(char const*) const str_or_null = val((char const*){ "aaaaaaa" });
@@ -44,7 +39,7 @@
     }
 }
 
-[[gnu::const]] static Err(Opt(char const*)) err_optional() {
+static Err(Opt(char const*)) err_optional() {
     static_assert(sizeof(Err(Opt(char const*))) == sizeof(Err(char const*)));
     {
         Err(Opt(int)) const int_or_null_or_err = ok(val(0xaaaaaaa));
@@ -72,37 +67,37 @@
     }
 }
 
-[[gnu::const]] static Err(bool) err_union_try() {
+static Err(bool) err_union_try() {
     int const number = __extension__ try(bool)(ok(0xaaaaaaa));
     assert(number == 0xaaaaaaa);
     [[maybe_unused]] long const _ = __extension__ try(bool)(err_union());
     assert(false);
 }
 
-[[gnu::const]] static Err() err_union_void() {
+static Err() err_union_void() {
     return true ? ok() : err()(1);
 }
 
-[[gnu::const]] static Opt() optional_void() {
+static Opt() optional_void() {
     return true ? val() : null();
 }
 
-[[gnu::const]] static Err(Opt()) err_optional_void() {
+static Err(Opt()) err_optional_void() {
     return true ? ok(val()) : ok(null());
 }
 
-[[gnu::const]] static Err() err_union_try_void() {
+static Err() err_union_try_void() {
     [[maybe_unused]] auto const _ = __extension__ try()(ok());
     return ok();
 }
 
 int main() {
-    do_not_optimise_away(err_union());
-    do_not_optimise_away(optional());
-    do_not_optimise_away(err_optional());
-    do_not_optimise_away(err_union_void());
-    do_not_optimise_away(optional_void());
-    do_not_optimise_away(err_optional_void());
-    do_not_optimise_away(err_union_try());
-    do_not_optimise_away(err_union_try_void());
+    (void)err_union();
+    (void)optional();
+    (void)err_optional();
+    (void)err_union_void();
+    (void)optional_void();
+    (void)err_optional_void();
+    (void)err_union_try();
+    (void)err_union_try_void();
 }
