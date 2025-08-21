@@ -70,7 +70,7 @@ static Err(Opt(char const*)) err_optional() {
 static Err(bool) err_union_try() {
     int const number = __extension__ try(bool)(ok(0xaaaaaaa));
     assert(number == 0xaaaaaaa);
-    [[maybe_unused]] long const _ = __extension__ try(bool)(err_union());
+    (void)__extension__ try(bool)(err_union());
     assert(false);
 }
 

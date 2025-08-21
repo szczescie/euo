@@ -625,7 +625,7 @@
     #define euo_flags
 #endif
 
-#define _euo_no_short_names 1
+#define _euo_long_names 1
 #define _euo_no_assert 2
 #define _euo_pedantic 4
 
@@ -633,7 +633,7 @@
 #define _euo_flag_bits (0 _euo_map(_euo_or, euo_flags))
 #define _euo_flag(flag) (_euo_##flag & _euo_flag_bits)
 
-#if _euo_flag(no_short_names)
+#if _euo_flag(long_names)
     #define euo_Err _euo_Err
     #define euo_Opt _euo_Opt
     #define euo_ok _euo_ok
