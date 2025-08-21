@@ -1,71 +1,33 @@
 ```c
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ usage ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-#define euo_types char, int, long, float, double, bool, char*
-#include "euo.h" // default error code type is unsigned short
-
-constexpr unsigned short some_error_code = 1111;
-
-Err(int) returning_an_int_error_union(bool yes) {
-    if (yes) return ok(41); // ok infers the type
-    return err(int)(some_error_code);
-}
-
-Opt(char*) returning_a_string_optional(bool yes) {
-    if (yes) return val(":^)"); // same for optionals
-    return null(char*);
-}
-
-Err() checking_the_results() { // no argument means void
-    Err(int) int_or_err = returning_an_int_error_union(true);
-    if (failed(int_or_err)) {
-        unsigned short error = check(int_or_err);
-        return err()(error);
-    } else {
-        printf("int = %d\n", unwrap(int_or_err));
-    }
-
-    Opt(char*) string_or_null = returning_a_string_optional(true);
-    char* text = absent(string_or_null) ? "bbbb" : unwrap(string_or_null);
-
-    return ok();
-}
-
-Err(int) returning_some_error_union() {
-    return returning_an_int_error_union(true); // returning works as expected
-}
-
-Err(bool) using_the_try_expression() {
-    // try macro unwraps the value or returns the error (from this function)
-    printf("value = %d\n", try(bool)(returning_some_error_union()));
-    return ok(true);
-}
-```
-
-```c
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ configuration ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
-typedef enum { overflow, access_denied, unexpected } Error;
+typedef enum : u16 { err_overflowed } Error;
 
 #define euo_error_type Error
-#define euo_types int, double // currently limited to 255 types
-#define euo_flags no_short_names, no_assert, pedantic
+#define euo_types u16, u32, u64, bool
 #include "euo.h"
 
-euo_Err(double) returning_a_double_error_union() {
-    return euo_ok(0.0);
+Opt(u32) downcast(u64 number) {
+    if (number > ~(u32)0)
+        return null(u32);
+    return val((u32)number);
 }
 
-euo_Err() assigning_an_optional() {
-    auto some_int = euo_null(int);
-    some_int = euo_val(1234);
+Err(u32) add(u32 augend, u32 addend) {
+    auto sum = augend + addend;
+    if (sum < augend)
+        return err(u32)(err_overflowed);
+    return ok(sum);
+}
 
-    // now unwrap will use unreachable() instead of asserting
-    printf("int = %d\n", euo_unwrap(some_int));
+int main() {
+    Opt(u32) number_or_null = downcast(0xfeed);
+    u32 augend = absent(number_or_null) ? 0 : unwrap(number_or_null);
 
-    // try is not allowed in pedantic mode
-    double something = euo_try()(returning_a_double_error_union());
+    Err(u32) number_or_error = add(augend, 0xceed);
+    if (failed(number_or_error)) {
+        printf("addition failed with error code %u\n", check(number_or_error));
+        return 1;
+    }
 
-    return euo_ok();
+    printf("the result is %u\n", unwrap(number_or_error));
 }
 ```
