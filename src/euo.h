@@ -350,11 +350,10 @@
     , _euo_ErrOpt_i(i): _euo_failed_opt_i(i)
 #define _euo_generic_absent(i, _) \
     , _euo_Optional_i(i): _euo_absent_i(i)
-#define _euo_generic_unwrap_err_union(i, _)          \
+#define _euo_generic_unwrap(i, _)                    \
     , _euo_ErrUnion_i(i): _euo_unwrap_err_union_i(i) \
+    , _euo_Optional_i(i): _euo_unwrap_optional_i(i)  \
     , _euo_ErrOpt_i(i): _euo_unwrap_err_union_opt_i(i)
-#define _euo_generic_unwrap_optional(i, _) \
-    , _euo_Optional_i(i): _euo_unwrap_optional_i(i)
 #define _euo_generic_check(i, _)          \
     , _euo_ErrUnion_i(i): _euo_check_i(i) \
     , _euo_ErrOpt_i(i): _euo_check_opt_i(i)
@@ -401,11 +400,8 @@
     _Generic((err_union) _euo_map(_euo_generic_failed, _euo_types))(err_union)
 #define _euo_absent(optional) \
     _Generic((optional) _euo_map(_euo_generic_absent, _euo_types))(optional)
-#define _euo_unwrap(either)                                 \
-    _Generic((either)                                       \
-        _euo_map(_euo_generic_unwrap_err_union, _euo_types) \
-        _euo_map(_euo_generic_unwrap_optional, _euo_types)  \
-    )(either)
+#define _euo_unwrap(either) \
+    _Generic((either)_euo_map(_euo_generic_unwrap, _euo_types))(either)
 #define _euo_check(err_union) \
     _Generic((err_union) _euo_map(_euo_generic_check, _euo_types))(err_union)
 // clang-format on
