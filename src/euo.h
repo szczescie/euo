@@ -401,7 +401,7 @@
 #define _euo_absent(optional) \
     _Generic((optional) _euo_map(_euo_generic_absent, _euo_types))(optional)
 #define _euo_val(either) \
-    _Generic((either)_euo_map(_euo_generic_val, _euo_types))(either)
+    _Generic((either) _euo_map(_euo_generic_val, _euo_types))(either)
 #define _euo_errcode(err_union) \
     _Generic((err_union) _euo_map(_euo_generic_errcode, _euo_types))(err_union)
 // clang-format on
@@ -660,17 +660,16 @@
     #endif
 #endif
 
-// clang-format off
 #if !_euo_flag(pedantic)
     #define _euo_try_arity_1(T) \
-        ({                      \
+            ({                  \
             typedef T _euo_T;   \
             _euo_try_inner
-    #define _euo_try_inner(err_union)                                  \
-            register auto const _euo_err_union = (err_union);          \
-            if (_euo_failed(_euo_err_union))                           \
-                return _euo_err(_euo_T)(_euo_errcode(_euo_err_union)); \
-            _euo_val(_euo_err_union);                                  \
+    #define _euo_try_inner(err_union)                              \
+        register auto const _euo_err_union = (err_union);          \
+        if (_euo_failed(_euo_err_union))                           \
+            return _euo_err(_euo_T)(_euo_errcode(_euo_err_union)); \
+        _euo_val(_euo_err_union);                                  \
         })
     #define _euo_try_arity_0() _euo_try_arity_1(_euo_Void)
     #define _euo_try(...) _euo_arity_call(_euo_try_arity_, __VA_ARGS__)
@@ -679,7 +678,6 @@
 #else
     #define _euo_void_fields bool _;
 #endif
-// clang-format on
 
 #if _euo_flag(no_assert) || defined NDEBUG
     #define _euo_assert(ok) ((ok) ? (void)0 : __builtin_unreachable())
