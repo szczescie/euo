@@ -359,52 +359,54 @@
     , _euo_ErrOpt_i(i): _euo_errcode_opt_i(i)
 // clang-format on
 
-#define _euo_arity_short_inner(_0, _1, count, ...) count
-#define _euo_arity_short(...) \
-    _euo_arity_short_inner(__VA_OPT__(, ) __VA_ARGS__, 1, 0)
-#define _euo_arity_call(name, ...) \
-    _euo_cat(name, _euo_arity_short(__VA_ARGS__))(__VA_ARGS__)
-
 // clang-format off
-#define _euo_Err_arity_1(T) \
-    typeof(_Generic((T){} _euo_map(_euo_generic_err_union, _euo_types)))
-#define _euo_Err_arity_0() _euo_Err_arity_1(_euo_Void)
-#define _euo_Err(...) _euo_arity_call(_euo_Err_arity_, __VA_ARGS__)
-
-#define _euo_Opt_arity_1(T) \
-    typeof(_Generic((T){} _euo_map(_euo_generic_optional, _euo_types)))
-#define _euo_Opt_arity_0() _euo_Opt_arity_1(_euo_Void)
-#define _euo_Opt(...) _euo_arity_call(_euo_Opt_arity_, __VA_ARGS__)
-
-#define _euo_ok_arity_1(value) \
-    _Generic((value) _euo_map(_euo_generic_ok, _euo_types))(value)
-#define _euo_ok_arity_0() _euo_ok_arity_1((_euo_Void){})
-#define _euo_ok(...) _euo_arity_call(_euo_ok_arity_, __VA_ARGS__)
-
-#define _euo_err_arity_1(T) \
-    _Generic((T){} _euo_map(_euo_generic_err, _euo_types))
-#define _euo_err_arity_0() _euo_err_arity_1(_euo_Void)
-#define _euo_err(...) _euo_arity_call(_euo_err_arity_, __VA_ARGS__)
-
-#define _euo_some_arity_1(value) \
-    _Generic((value) _euo_map(_euo_generic_some, _euo_types))(value)
-#define _euo_some_arity_0() _euo_some_arity_1((_euo_Void){})
-#define _euo_some(...) _euo_arity_call(_euo_some_arity_, __VA_ARGS__)
-
-#define _euo_none_arity_1(T) \
-    _Generic((T){} _euo_map(_euo_generic_none, _euo_types))()
-#define _euo_none_arity_0() _euo_none_arity_1(_euo_Void)
-#define _euo_none(...) _euo_arity_call(_euo_none_arity_, __VA_ARGS__)
-
-#define _euo_failed(err_union) \
-    _Generic((err_union) _euo_map(_euo_generic_failed, _euo_types))(err_union)
-#define _euo_absent(optional) \
-    _Generic((optional) _euo_map(_euo_generic_absent, _euo_types))(optional)
-#define _euo_val(either) \
-    _Generic((either) _euo_map(_euo_generic_val, _euo_types))(either)
-#define _euo_errcode(err_union) \
-    _Generic((err_union) _euo_map(_euo_generic_errcode, _euo_types))(err_union)
+#define _euo_Err_inner_1(T) typeof(_Generic((T){} \
+    _euo_map(_euo_generic_err_union, _euo_types)  \
+))
+#define _euo_Opt_inner_1(T) typeof(_Generic((T){} \
+    _euo_map(_euo_generic_optional, _euo_types)   \
+))
+#define _euo_ok_inner_1(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_ok, _euo_types)           \
+)(__VA_ARGS__)
+#define _euo_err_inner_1(T) _Generic((T){} \
+    _euo_map(_euo_generic_err, _euo_types) \
+)
+#define _euo_some_inner_1(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_some, _euo_types)           \
+)(__VA_ARGS__)
+#define _euo_none_inner_1(T) _Generic((T){} \
+    _euo_map(_euo_generic_none, _euo_types) \
+)()
+#define _euo_failed(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_failed, _euo_types)   \
+)(__VA_ARGS__)
+#define _euo_absent(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_absent, _euo_types)   \
+)(__VA_ARGS__)
+#define _euo_val(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_val, _euo_types)   \
+)(__VA_ARGS__)
+#define _euo_errcode(...) _Generic((__VA_ARGS__) \
+    _euo_map(_euo_generic_errcode, _euo_types)   \
+)(__VA_ARGS__)
 // clang-format on
+
+#define _euo_Err_inner() _euo_Err_inner_1(_euo_Void)
+#define _euo_Opt_inner() _euo_Opt_inner_1(_euo_Void)
+#define _euo_ok_inner() _euo_ok_inner_1((_euo_Void){})
+#define _euo_err_inner() _euo_err_inner_1(_euo_Void)
+#define _euo_some_inner() _euo_some_inner_1((_euo_Void){})
+#define _euo_none_inner() _euo_none_inner_1(_euo_Void)
+
+#define _euo_arity_call(name, ...) _euo_cat(name, __VA_OPT__(_1))(__VA_ARGS__)
+
+#define _euo_Err(...) _euo_arity_call(_euo_Err_inner, __VA_ARGS__)
+#define _euo_Opt(...) _euo_arity_call(_euo_Opt_inner, __VA_ARGS__)
+#define _euo_ok(...) _euo_arity_call(_euo_ok_inner, __VA_ARGS__)
+#define _euo_err(...) _euo_arity_call(_euo_err_inner, __VA_ARGS__)
+#define _euo_some(...) _euo_arity_call(_euo_some_inner, __VA_ARGS__)
+#define _euo_none(...) _euo_arity_call(_euo_none_inner, __VA_ARGS__)
 // #endregion
 
 // #region declarations
@@ -661,18 +663,18 @@
 #endif
 
 #if !_euo_flag(pedantic)
-    #define _euo_try_arity_1(T) \
+    #define _euo_try_inner_1(T) \
         ({                  \
         typedef T _euo_T;   \
-        _euo_try_inner
-    #define _euo_try_inner(err_union)                              \
+        _euo_try_continued
+    #define _euo_try_continued(err_union)                          \
         register auto const _euo_err_union = (err_union);          \
         if (_euo_failed(_euo_err_union))                           \
             return _euo_err(_euo_T)(_euo_errcode(_euo_err_union)); \
         _euo_val(_euo_err_union);                                  \
         })
-    #define _euo_try_arity_0() _euo_try_arity_1(_euo_Void)
-    #define _euo_try(...) _euo_arity_call(_euo_try_arity_, __VA_ARGS__)
+    #define _euo_try_inner() _euo_try_inner_1(_euo_Void)
+    #define _euo_try(...) _euo_arity_call(_euo_try_inner, __VA_ARGS__)
 
     #define _euo_void_fields
 #else

@@ -5,9 +5,13 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 typedef uint64_t u64;
+typedef struct {
+    u64 len;
+    char const* buf;
+} Str;
 
 #define euo_error_type u32
-#define euo_types u32, u64, u8, u8 const*, u16*, bool
+#define euo_types u32, u64, u8, u8 const*, u16*, bool, Str
 #include "euo.h"
 
 static Err(u64) err_union() {
@@ -97,6 +101,14 @@ static Err() err_union_try_void() {
     return ok();
 }
 
+static u32 some_code(u8 a, u8 b, u8 c) {
+    return 444;
+}
+
+static Err(Str) err_union_comma() {
+    return true ? ok((Str){ 1, "b" }) : err(Str)(some_code(1, 2, 3));
+}
+
 int main() {
     (void)err_union();
     (void)optional();
@@ -106,4 +118,5 @@ int main() {
     (void)err_optional_void();
     (void)err_union_try();
     (void)err_union_try_void();
+    (void)err_union_comma();
 }
