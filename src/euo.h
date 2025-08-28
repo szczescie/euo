@@ -377,7 +377,7 @@
 )(__VA_ARGS__)
 #define _euo_none_arity_n(T) _Generic((T){} \
     _euo_map(_euo_generic_none, _euo_types) \
-)()
+)
 #define _euo_failed(...) _Generic((__VA_ARGS__) \
     _euo_map(_euo_generic_failed, _euo_types)   \
 )(__VA_ARGS__)
@@ -499,13 +499,8 @@
         };                                           \
     }
 
-// clang-format off
-#define _euo_declare_none(i)                                \
-    [[gnu::const, maybe_unused]]                            \
-    static inline _euo_Optional_i(i) _euo_none_i(i)() {     \
-        return (_euo_Optional_i(i)){ .null_active = true }; \
-    }
-// clang-format on
+#define _euo_declare_none(i) \
+    static _euo_Optional_i(i) const _euo_none_i(i) = { .null_active = true };
 
 #define _euo_declare_failed(i)                                  \
     [[gnu::const, maybe_unused, nodiscard]]                     \
