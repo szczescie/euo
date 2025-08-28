@@ -360,22 +360,22 @@
 // clang-format on
 
 // clang-format off
-#define _euo_Err_inner_1(T) typeof(_Generic((T){} \
+#define _euo_Err_arity_n(T) typeof(_Generic((T){} \
     _euo_map(_euo_generic_err_union, _euo_types)  \
 ))
-#define _euo_Opt_inner_1(T) typeof(_Generic((T){} \
+#define _euo_Opt_arity_n(T) typeof(_Generic((T){} \
     _euo_map(_euo_generic_optional, _euo_types)   \
 ))
-#define _euo_ok_inner_1(...) _Generic((__VA_ARGS__) \
+#define _euo_ok_arity_n(...) _Generic((__VA_ARGS__) \
     _euo_map(_euo_generic_ok, _euo_types)           \
 )(__VA_ARGS__)
-#define _euo_err_inner_1(T) _Generic((T){} \
-    _euo_map(_euo_generic_err, _euo_types) \
-)
-#define _euo_some_inner_1(...) _Generic((__VA_ARGS__) \
+#define _euo_err_arity_n(T, ...) _Generic((T){} \
+    _euo_map(_euo_generic_err, _euo_types)      \
+)(__VA_ARGS__)
+#define _euo_some_arity_n(...) _Generic((__VA_ARGS__) \
     _euo_map(_euo_generic_some, _euo_types)           \
 )(__VA_ARGS__)
-#define _euo_none_inner_1(T) _Generic((T){} \
+#define _euo_none_arity_n(T) _Generic((T){} \
     _euo_map(_euo_generic_none, _euo_types) \
 )()
 #define _euo_failed(...) _Generic((__VA_ARGS__) \
@@ -392,21 +392,31 @@
 )(__VA_ARGS__)
 // clang-format on
 
-#define _euo_Err_inner() _euo_Err_inner_1(_euo_Void)
-#define _euo_Opt_inner() _euo_Opt_inner_1(_euo_Void)
-#define _euo_ok_inner() _euo_ok_inner_1((_euo_Void){})
-#define _euo_err_inner() _euo_err_inner_1(_euo_Void)
-#define _euo_some_inner() _euo_some_inner_1((_euo_Void){})
-#define _euo_none_inner() _euo_none_inner_1(_euo_Void)
+#define _euo_Err_arity_0() _euo_Err_arity_n(_euo_Void)
+#define _euo_Opt_arity_0() _euo_Opt_arity_n(_euo_Void)
+#define _euo_ok_arity_0() _euo_ok_arity_n((_euo_Void){})
+#define _euo_err_arity_1(...) _euo_err_arity_n(_euo_Void, __VA_ARGS__)
+#define _euo_some_arity_0() _euo_some_arity_n((_euo_Void){})
+#define _euo_none_arity_0() _euo_none_arity_n(_euo_Void)
 
-#define _euo_arity_call(name, ...) _euo_cat(name, __VA_OPT__(_1))(__VA_ARGS__)
+#define _euo_arity_0 0
+#define _euo_not_arity_0 n
+#define _euo_arity_0_or_n(name, ...) \
+    _euo_cat(name, _euo_##__VA_OPT__(not_)##arity_0)(__VA_ARGS__)
 
-#define _euo_Err(...) _euo_arity_call(_euo_Err_inner, __VA_ARGS__)
-#define _euo_Opt(...) _euo_arity_call(_euo_Opt_inner, __VA_ARGS__)
-#define _euo_ok(...) _euo_arity_call(_euo_ok_inner, __VA_ARGS__)
-#define _euo_err(...) _euo_arity_call(_euo_err_inner, __VA_ARGS__)
-#define _euo_some(...) _euo_arity_call(_euo_some_inner, __VA_ARGS__)
-#define _euo_none(...) _euo_arity_call(_euo_none_inner, __VA_ARGS__)
+#define _euo_arity_1 1
+#define _euo_not_arity_1 n
+#define _euo_arity_1_or_n(name, arg_0, ...)           \
+    _euo_cat(name, _euo_##__VA_OPT__(not_)##arity_1)( \
+        arg_0 __VA_OPT__(, ) __VA_ARGS__              \
+    )
+
+#define _euo_Err(...) _euo_arity_0_or_n(_euo_Err_arity_, __VA_ARGS__)
+#define _euo_Opt(...) _euo_arity_0_or_n(_euo_Opt_arity_, __VA_ARGS__)
+#define _euo_ok(...) _euo_arity_0_or_n(_euo_ok_arity_, __VA_ARGS__)
+#define _euo_err(...) _euo_arity_1_or_n(_euo_err_arity_, __VA_ARGS__)
+#define _euo_some(...) _euo_arity_0_or_n(_euo_some_arity_, __VA_ARGS__)
+#define _euo_none(...) _euo_arity_0_or_n(_euo_none_arity_, __VA_ARGS__)
 // #endregion
 
 // #region declarations
@@ -663,18 +673,14 @@
 #endif
 
 #if !_euo_flag(pedantic)
-    #define _euo_try_inner_1(T) \
-        ({                  \
-        typedef T _euo_T;   \
-        _euo_try_continued
-    #define _euo_try_continued(err_union)                          \
-        register auto const _euo_err_union = (err_union);          \
-        if (_euo_failed(_euo_err_union))                           \
-            return _euo_err(_euo_T)(_euo_errcode(_euo_err_union)); \
-        _euo_val(_euo_err_union);                                  \
-        })
-    #define _euo_try_inner() _euo_try_inner_1(_euo_Void)
-    #define _euo_try(...) _euo_arity_call(_euo_try_inner, __VA_ARGS__)
+    #define _euo_try_arity_n(T, ...) ({                               \
+        register auto const _euo_err_union = (__VA_ARGS__);           \
+        if (_euo_failed(_euo_err_union))                              \
+            return _euo_err_arity_n(T, _euo_errcode(_euo_err_union)); \
+        _euo_val(_euo_err_union);                                     \
+    })
+    #define _euo_try_arity_1(...) _euo_try_arity_n(_euo_Void, __VA_ARGS__)
+    #define _euo_try(...) _euo_arity_1_or_n(_euo_try_arity_, __VA_ARGS__)
 
     #define _euo_void_fields
 #else

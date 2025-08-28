@@ -18,7 +18,7 @@ typedef enum : u8 { err_overflowed } Error;
 
 [[gnu::const]] static Err(u32) add(u32 augend, u32 addend) {
     auto sum = augend + addend;
-    if (sum < augend) return err(u32)(err_overflowed);
+    if (sum < augend) return err(u32, err_overflowed);
     return ok(sum);
 }
 

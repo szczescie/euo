@@ -24,7 +24,7 @@ static Err(u64) err_union() {
         assert(unwrapped == 0xaaaaaaa);
     }
     {
-        Err(u64) const u64_or_err = err(u64)(404);
+        Err(u64) const u64_or_err = err(u64, 404);
         assert(failed(u64_or_err));
         u32 const error_code = errcode(u64_or_err);
         assert(error_code == 404);
@@ -70,7 +70,7 @@ static Err(Opt(u8 const*)) err_optional() {
         assert(absence);
     }
     {
-        Err(Opt(u8 const*)) str_or_null_or_err = err(Opt(u8 const*))(503);
+        Err(Opt(u8 const*)) str_or_null_or_err = err(Opt(u8 const*), 503);
         bool const failure = failed(str_or_null_or_err);
         assert(failure);
         return str_or_null_or_err;
@@ -78,14 +78,14 @@ static Err(Opt(u8 const*)) err_optional() {
 }
 
 static Err(bool) err_union_try() {
-    u32 const number = __extension__ try(bool)(ok((u32)0xaaaaaaa));
+    u32 const number = __extension__ try(bool, ok((u32)0xaaaaaaa));
     assert(number == 0xaaaaaaa);
-    (void)__extension__ try(bool)(err_union());
+    (void)__extension__ try(bool, err_union());
     assert(false);
 }
 
 static Err() err_union_void() {
-    return true ? ok() : err()(1);
+    return true ? ok() : err(1);
 }
 
 static Opt() optional_void() {
@@ -97,16 +97,20 @@ static Err(Opt()) err_optional_void() {
 }
 
 static Err() err_union_try_void() {
-    [[maybe_unused]] auto const _ = __extension__ try()(ok());
+    [[maybe_unused]] auto const _ = __extension__ try(ok());
     return ok();
 }
 
-static u32 some_code(u8 a, u8 b, u8 c) {
+static u32 some_code([[maybe_unused]] u8 a, [[maybe_unused]] u8 b) {
     return 444;
 }
 
 static Err(Str) err_union_comma() {
-    return true ? ok((Str){ 1, "b" }) : err(Str)(some_code(1, 2, 3));
+    return true ? ok((Str){ 1, "b" }) : err(Str, some_code(0, 0));
+}
+
+static Err(Str) err_union_try_comma() {
+    return ok(__extension__ try(Str, err(Str, some_code(0, 0))));
 }
 
 int main() {
@@ -119,4 +123,5 @@ int main() {
     (void)err_union_try();
     (void)err_union_try_void();
     (void)err_union_comma();
+    (void)err_union_try_comma();
 }
