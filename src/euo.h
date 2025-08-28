@@ -499,8 +499,9 @@
         };                                           \
     }
 
-#define _euo_declare_none(i) \
-    static _euo_Optional_i(i) const _euo_none_i(i) = { .null_active = true };
+#define _euo_declare_none(i)                            \
+    [[maybe_unused]] static auto const _euo_none_i(i) = \
+        (_euo_Optional_i(i)){ .null_active = true };
 
 #define _euo_declare_failed(i)                                  \
     [[gnu::const, maybe_unused, nodiscard]]                     \
