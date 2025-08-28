@@ -527,14 +527,15 @@
         return __builtin_expect(optional.null_active, false); \
     }
 
-#define _euo_declare_val_err_union(i, T)                                 \
-    [[gnu::const, maybe_unused, nodiscard]]                              \
-    static inline T _euo_val_err_union_i(i)(                             \
-        register _euo_ErrUnion_i(i) const err_union                      \
-    ) {                                                                  \
-        bool const value_field_is_active = !_euo_failed_i(i)(err_union); \
-        _euo_assert(value_field_is_active);                              \
-        return err_union.payload.value;                                  \
+#define _euo_declare_val_err_union(i, T)            \
+    [[gnu::const, maybe_unused, nodiscard]]         \
+    static inline T _euo_val_err_union_i(i)(        \
+        register _euo_ErrUnion_i(i) const err_union \
+    ) {                                             \
+        register bool const value_field_is_active = \
+            !_euo_failed_i(i)(err_union);           \
+        _euo_assert(value_field_is_active);         \
+        return err_union.payload.value;             \
     }
 
 // clang-format off
