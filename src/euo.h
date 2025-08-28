@@ -662,9 +662,9 @@
 
 #if !_euo_flag(pedantic)
     #define _euo_try_arity_1(T) \
-            ({                  \
-            typedef T _euo_T;   \
-            _euo_try_inner
+        ({                  \
+        typedef T _euo_T;   \
+        _euo_try_inner
     #define _euo_try_inner(err_union)                              \
         register auto const _euo_err_union = (err_union);          \
         if (_euo_failed(_euo_err_union))                           \
