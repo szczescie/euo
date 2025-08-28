@@ -1,15 +1,18 @@
-If:
-    PathMatch: .*\.c
 CompileFlags:
     Add:
-        - -std=c23
-        - -0g
-        - -g3
-        - -DDEBUG
         - -xc
+        - -std=c23
+        - -O0
+        - -g
+        - -DDEBUG
         - -Weverything
         - -pedantic-errors
+
+        - -Wno-c++-compat
+        - -Wno-c++98-compat
         - -Wno-pre-c11-compat
         - -Wno-pre-c23-compat
         - -Wno-declaration-after-statement
         - -Wno-padded
+        - -Wno-reserved-identifier
+        - -Wno-gnu-empty-struct
