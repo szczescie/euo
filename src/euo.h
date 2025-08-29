@@ -688,7 +688,7 @@
 #define _euo_static_implementation 1
 #define _euo_implementation 2
 #define _euo_short_names 4
-#define _euo_pedantic 8
+#define _euo_no_pedantic 8
 #define _euo_no_assert 16
 
 #define _euo_or(_, flag) | _euo_##flag
@@ -722,7 +722,7 @@
     #define absent _euo_absent
     #define val _euo_val
     #define errcode _euo_errcode
-    #if !_euo_flag(pedantic)
+    #if _euo_flag(no_pedantic)
         #define try _euo_try
     #endif
 #else
@@ -736,12 +736,12 @@
     #define euo_absent _euo_absent
     #define euo_val _euo_val
     #define euo_errcode _euo_errcode
-    #if !_euo_flag(pedantic)
+    #if _euo_flag(no_pedantic)
         #define euo_try _euo_try
     #endif
 #endif
 
-#if !_euo_flag(pedantic)
+#if _euo_flag(no_pedantic)
     #define _euo_try_arity_n(T, ...) ({                               \
         register auto const _euo_err_union = (__VA_ARGS__);           \
         if (_euo_failed(_euo_err_union))                              \
