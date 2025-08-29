@@ -1,24 +1,23 @@
 ```c
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-typedef uint8_t u8;
 typedef uint32_t u32;
 typedef uint64_t u64;
 
-#define euo_types u32, u64, bool, u8 const*
+#define euo_types u32, u64
 #include "euo.h"
 
-[[gnu::const]] static Opt(u32) downcast(u64 number) {
+Opt(u32) downcast(u64 number) {
     if (number > ~(u32)0) return none(u32);
     return some((u32)number);
 }
 
-typedef enum : u8 { err_overflowed } Error;
+typedef enum { error_overflowed } Error;
 
-[[gnu::const]] static Err(u32) add(u32 augend, u32 addend) {
-    auto sum = augend + addend;
-    if (sum < augend) return err(u32, err_overflowed);
+Err(u32) add(u32 augend, u32 addend) {
+    u32 sum = augend + addend;
+    if (sum < augend) return err(u32, error_overflowed);
     return ok(sum);
 }
 
