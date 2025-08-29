@@ -1,5 +1,9 @@
 #pragma once
-// #include <assert.h> // conditionally included
+
+#include <stdint.h>
+
+// conditionally included:
+// <assert.h>
 
 // #region arity selection
 #define _euo_arity_inner(                                                      \
@@ -421,115 +425,140 @@
 
 // #region declarations
 // clang-format off
-#define _euo_declare_err_union(i, T)                      \
-    typedef struct [[nodiscard]] _euo_ErrUnion_i(i) {     \
+#define _euo_def_err_union(i, T)                          \
+    typedef struct _euo_ErrUnion_i(i) {                   \
         bool error_active;                                \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrUnion_i(i);
 
-#define _euo_declare_optional(i, T)                   \
-    typedef struct [[nodiscard]] _euo_Optional_i(i) { \
-        bool null_active;                             \
-        T value;                                      \
+#define _euo_def_optional(i, T)         \
+    typedef struct _euo_Optional_i(i) { \
+        bool null_active;               \
+        T value;                        \
     } _euo_Optional_i(i);
 
-#define _euo_declare_err_union_opt(i, T)                  \
-    typedef struct [[nodiscard]] _euo_ErrOpt_i(i) {       \
+#define _euo_def_err_union_opt(i, T)                      \
+    typedef struct _euo_ErrOpt_i(i) {                     \
         bool error_active;                                \
         bool null_active;                                 \
         union { T value; _euo_ErrorCode error; } payload; \
     } _euo_ErrOpt_i(i);
 // clang-format on
 
-#define _euo_declare_ok(i, T)                      \
-    [[gnu::const, maybe_unused]]                   \
-    static inline _euo_ErrUnion_i(i) _euo_ok_i(i)( \
-        register T const value                     \
-    ) {                                            \
-        return (_euo_ErrUnion_i(i)){               \
-            .error_active = false,                 \
-            .payload = { .value = value }          \
-        };                                         \
-    }
-
-// clang-format off
-#define _euo_declare_ok_opt(i, T)                    \
-    [[gnu::const, maybe_unused]]                     \
-    static inline _euo_ErrOpt_i(i) _euo_ok_opt_i(i)( \
-        register _euo_Optional_i(i) const optional   \
-    ) {                                              \
-        return (_euo_ErrOpt_i(i)){                   \
-            .error_active = false,                   \
-            .null_active = optional.null_active,     \
-            .payload = { .value = optional.value }   \
-        };                                           \
-    }
-// clang-format on
-
-#define _euo_declare_err(i)                         \
-    [[gnu::const, maybe_unused]]                    \
-    static inline _euo_ErrUnion_i(i) _euo_err_i(i)( \
-        register _euo_ErrorCode const error         \
-    ) {                                             \
-        return (_euo_ErrUnion_i(i)){                \
-            .error_active = true,                   \
-            .payload = { .error = error }           \
-        };                                          \
-    }
-
-#define _euo_declare_err_opt(i)                       \
-    [[gnu::const, maybe_unused]]                      \
-    static inline _euo_ErrOpt_i(i) _euo_err_opt_i(i)( \
-        register _euo_ErrorCode const error           \
+#define _euo_decl_ok(i, T)                     \
+    _euo_attr _euo_ErrUnion_i(i) _euo_ok_i(i)( \
+        register T const value                 \
+    );
+#define _euo_def_ok(i, T)                             \
+    _euo_attr inline _euo_ErrUnion_i(i) _euo_ok_i(i)( \
+        register T const value                        \
     ) {                                               \
-        return (_euo_ErrOpt_i(i)){                    \
-            .error_active = true,                     \
-            .payload = { .error = error }             \
+        return (_euo_ErrUnion_i(i)){                  \
+            .error_active = false,                    \
+            .payload = { .value = value }             \
         };                                            \
     }
 
-#define _euo_declare_some(i, T)                      \
-    [[gnu::const, maybe_unused]]                     \
-    static inline _euo_Optional_i(i) _euo_some_i(i)( \
-        register T const value                       \
-    ) {                                              \
-        return (_euo_Optional_i(i)){                 \
-            .null_active = false,                    \
-            .value = value                           \
-        };                                           \
+#define _euo_decl_ok_opt(i, T)                     \
+    _euo_attr _euo_ErrOpt_i(i) _euo_ok_opt_i(i)(   \
+        register _euo_Optional_i(i) const optional \
+    );
+#define _euo_def_ok_opt(i, T)                           \
+    _euo_attr inline _euo_ErrOpt_i(i) _euo_ok_opt_i(i)( \
+        register _euo_Optional_i(i) const optional      \
+    ) {                                                 \
+        return (_euo_ErrOpt_i(i)){                      \
+            .error_active = false,                      \
+            .null_active = optional.null_active,        \
+            .payload = { .value = optional.value }      \
+        };                                              \
     }
 
-#define _euo_declare_none(i)                            \
-    [[maybe_unused]] static auto const _euo_none_i(i) = \
+#define _euo_decl_err(i)                        \
+    _euo_attr _euo_ErrUnion_i(i) _euo_err_i(i)( \
+        register _euo_ErrorCode const error     \
+    );
+#define _euo_def_err(i)                                \
+    _euo_attr inline _euo_ErrUnion_i(i) _euo_err_i(i)( \
+        register _euo_ErrorCode const error            \
+    ) {                                                \
+        return (_euo_ErrUnion_i(i)){                   \
+            .error_active = true,                      \
+            .payload = { .error = error }              \
+        };                                             \
+    }
+
+#define _euo_decl_err_opt(i)                      \
+    _euo_attr _euo_ErrOpt_i(i) _euo_err_opt_i(i)( \
+        register _euo_ErrorCode const error       \
+    );
+#define _euo_def_err_opt(i)                              \
+    _euo_attr inline _euo_ErrOpt_i(i) _euo_err_opt_i(i)( \
+        register _euo_ErrorCode const error              \
+    ) {                                                  \
+        return (_euo_ErrOpt_i(i)){                       \
+            .error_active = true,                        \
+            .payload = { .error = error }                \
+        };                                               \
+    }
+
+#define _euo_decl_some(i, T)                     \
+    _euo_attr _euo_Optional_i(i) _euo_some_i(i)( \
+        register T const value                   \
+    );
+#define _euo_def_some(i, T)                             \
+    _euo_attr inline _euo_Optional_i(i) _euo_some_i(i)( \
+        register T const value                          \
+    ) {                                                 \
+        return (_euo_Optional_i(i)){                    \
+            .null_active = false,                       \
+            .value = value                              \
+        };                                              \
+    }
+
+#define _euo_def_none(i)                             \
+    [[maybe_unused]] constexpr auto _euo_none_i(i) = \
         (_euo_Optional_i(i)){ .null_active = true };
 
-#define _euo_declare_failed(i)                                  \
-    [[gnu::const, maybe_unused, nodiscard]]                     \
-    static inline bool _euo_failed_i(i)(                        \
+#define _euo_decl_failed(i)                         \
+    _euo_attr bool _euo_failed_i(i)(                \
+        register _euo_ErrUnion_i(i) const err_union \
+    );
+#define _euo_def_failed(i)                                      \
+    _euo_attr inline bool _euo_failed_i(i)(                     \
         register _euo_ErrUnion_i(i) const err_union             \
     ) {                                                         \
         return __builtin_expect(err_union.error_active, false); \
     }
 
-#define _euo_declare_failed_opt(i)                                 \
-    [[gnu::const, maybe_unused, nodiscard]]                        \
-    static inline bool _euo_failed_opt_i(i)(                       \
+#define _euo_decl_failed_opt(i)                      \
+    _euo_attr bool _euo_failed_opt_i(i)(             \
+        register _euo_ErrOpt_i(i) const err_optional \
+    );
+#define _euo_def_failed_opt(i)                                     \
+    _euo_attr inline bool _euo_failed_opt_i(i)(                    \
         register _euo_ErrOpt_i(i) const err_optional               \
     ) {                                                            \
         return __builtin_expect(err_optional.error_active, false); \
     }
 
-#define _euo_declare_absent(i)                                \
-    [[gnu::const, maybe_unused, nodiscard]]                   \
-    static inline bool _euo_absent_i(i)(                      \
+#define _euo_decl_absent(i)                        \
+    _euo_attr bool _euo_absent_i(i)(               \
+        register _euo_Optional_i(i) const optional \
+    );
+#define _euo_def_absent(i)                                    \
+    _euo_attr inline bool _euo_absent_i(i)(                   \
         register _euo_Optional_i(i) const optional            \
     ) {                                                       \
         return __builtin_expect(optional.null_active, false); \
     }
 
-#define _euo_declare_val_err_union(i, T)            \
-    [[gnu::const, maybe_unused, nodiscard]]         \
-    static inline T _euo_val_err_union_i(i)(        \
+#define _euo_decl_val_err_union(i, T)               \
+    _euo_attr T _euo_val_err_union_i(i)(            \
+        register _euo_ErrUnion_i(i) const err_union \
+    );
+#define _euo_def_val_err_union(i, T)                \
+    _euo_attr inline T _euo_val_err_union_i(i)(     \
         register _euo_ErrUnion_i(i) const err_union \
     ) {                                             \
         register bool const value_field_is_active = \
@@ -538,25 +567,29 @@
         return err_union.payload.value;             \
     }
 
-// clang-format off
-#define _euo_declare_val_err_union_opt(i, T)                      \
-    [[gnu::const, maybe_unused, nodiscard]]                       \
-    static inline _euo_Optional_i(i) _euo_val_err_union_opt_i(i)( \
-        register _euo_ErrOpt_i(i) const err_optional              \
-    ) {                                                           \
-        register bool const error_field_is_not_active =           \
-            !_euo_failed_opt_i(i)(err_optional);                  \
-        _euo_assert(error_field_is_not_active);                   \
-        return (_euo_Optional_i(i)){                              \
-            .null_active = err_optional.null_active,              \
-            .value = err_optional.payload.value                   \
-        };                                                        \
+#define _euo_decl_val_err_union_opt(i, T)                     \
+    _euo_attr _euo_Optional_i(i) _euo_val_err_union_opt_i(i)( \
+        register _euo_ErrOpt_i(i) const err_optional          \
+    );
+#define _euo_def_val_err_union_opt(i, T)                             \
+    _euo_attr inline _euo_Optional_i(i) _euo_val_err_union_opt_i(i)( \
+        register _euo_ErrOpt_i(i) const err_optional                 \
+    ) {                                                              \
+        register bool const error_field_is_not_active =              \
+            !_euo_failed_opt_i(i)(err_optional);                     \
+        _euo_assert(error_field_is_not_active);                      \
+        return (_euo_Optional_i(i)){                                 \
+            .null_active = err_optional.null_active,                 \
+            .value = err_optional.payload.value                      \
+        };                                                           \
     }
-// clang-format on
 
-#define _euo_declare_val_optional(i, T)             \
-    [[gnu::const, maybe_unused, nodiscard]]         \
-    static inline T _euo_val_optional_i(i)(         \
+#define _euo_decl_val_optional(i, T)               \
+    _euo_attr T _euo_val_optional_i(i)(            \
+        register _euo_Optional_i(i) const optional \
+    );
+#define _euo_def_val_optional(i, T)                 \
+    _euo_attr inline T _euo_val_optional_i(i)(      \
         register _euo_Optional_i(i) const optional  \
     ) {                                             \
         register bool const value_field_is_active = \
@@ -565,9 +598,12 @@
         return optional.value;                      \
     }
 
-#define _euo_declare_errcode(i)                             \
-    [[gnu::const, maybe_unused, nodiscard]]                 \
-    static inline _euo_ErrorCode _euo_errcode_i(i)(         \
+#define _euo_decl_errcode(i)                        \
+    _euo_attr _euo_ErrorCode _euo_errcode_i(i)(     \
+        register _euo_ErrUnion_i(i) const err_union \
+    );
+#define _euo_def_errcode(i)                                 \
+    _euo_attr inline _euo_ErrorCode _euo_errcode_i(i)(      \
         register _euo_ErrUnion_i(i) const err_union         \
     ) {                                                     \
         register bool const error_field_is_active =         \
@@ -576,9 +612,12 @@
         return err_union.payload.error;                     \
     }
 
-#define _euo_declare_errcode_opt(i)                            \
-    [[gnu::const, maybe_unused, nodiscard]]                    \
-    static inline _euo_ErrorCode _euo_errcode_opt_i(i)(        \
+#define _euo_decl_errcode_opt(i)                     \
+    _euo_attr _euo_ErrorCode _euo_errcode_opt_i(i)(  \
+        register _euo_ErrOpt_i(i) const err_optional \
+    );
+#define _euo_def_errcode_opt(i)                                \
+    _euo_attr inline _euo_ErrorCode _euo_errcode_opt_i(i)(     \
         register _euo_ErrOpt_i(i) const err_optional           \
     ) {                                                        \
         register bool const error_field_is_active =            \
@@ -588,24 +627,39 @@
     }
 
 // clang-format off
-#define _euo_declare(i, T)               \
-    _euo_declare_err_union(i, T)         \
-    _euo_declare_optional(i, T)          \
-    _euo_declare_err_union_opt(i, T)     \
-    _euo_declare_ok(i, T)                \
-    _euo_declare_ok_opt(i, T)            \
-    _euo_declare_err(i)                  \
-    _euo_declare_err_opt(i)              \
-    _euo_declare_some(i, T)              \
-    _euo_declare_none(i)                 \
-    _euo_declare_failed(i)               \
-    _euo_declare_failed_opt(i)           \
-    _euo_declare_absent(i)               \
-    _euo_declare_val_err_union(i, T)     \
-    _euo_declare_val_err_union_opt(i, T) \
-    _euo_declare_val_optional(i, T)      \
-    _euo_declare_errcode(i)              \
-    _euo_declare_errcode_opt(i)
+#define _euo_define_types(i, T)  \
+    _euo_def_err_union(i, T)     \
+    _euo_def_optional(i, T)      \
+    _euo_def_err_union_opt(i, T) \
+    _euo_def_none(i)                 
+#define _euo_declare_functions(i, T)  \
+    _euo_decl_ok(i, T)                \
+    _euo_decl_ok_opt(i, T)            \
+    _euo_decl_err(i)                  \
+    _euo_decl_err_opt(i)              \
+    _euo_decl_some(i, T)              \
+    _euo_decl_failed(i)               \
+    _euo_decl_failed_opt(i)           \
+    _euo_decl_absent(i)               \
+    _euo_decl_val_err_union(i, T)     \
+    _euo_decl_val_err_union_opt(i, T) \
+    _euo_decl_val_optional(i, T)      \
+    _euo_decl_errcode(i)              \
+    _euo_decl_errcode_opt(i)
+#define _euo_define_functions(i, T)  \
+    _euo_def_ok(i, T)                \
+    _euo_def_ok_opt(i, T)            \
+    _euo_def_err(i)                  \
+    _euo_def_err_opt(i)              \
+    _euo_def_some(i, T)              \
+    _euo_def_failed(i)               \
+    _euo_def_failed_opt(i)           \
+    _euo_def_absent(i)               \
+    _euo_def_val_err_union(i, T)     \
+    _euo_def_val_err_union_opt(i, T) \
+    _euo_def_val_optional(i, T)      \
+    _euo_def_errcode(i)              \
+    _euo_def_errcode_opt(i)
 // clang-format on
 // #endregion
 
@@ -622,7 +676,7 @@
 #endif
 
 #if !defined euo_error_type || _euo_is_empty(euo_error_type)
-    #define _euo_ErrorCode unsigned short
+    #define _euo_ErrorCode uint_fast16_t
 #else
     #define _euo_ErrorCode euo_error_type
 #endif
@@ -631,29 +685,33 @@
     #define euo_flags
 #endif
 
-#define _euo_long_names 1
-#define _euo_no_assert 2
-#define _euo_pedantic 4
+#define _euo_static_implementation 1
+#define _euo_implementation 2
+#define _euo_short_names 4
+#define _euo_pedantic 8
+#define _euo_no_assert 16
 
 #define _euo_or(_, flag) | _euo_##flag
 #define _euo_flag_bits (0 _euo_map(_euo_or, euo_flags))
 #define _euo_flag(flag) (_euo_##flag & _euo_flag_bits)
 
-#if _euo_flag(long_names)
-    #define euo_Err _euo_Err
-    #define euo_Opt _euo_Opt
-    #define euo_ok _euo_ok
-    #define euo_err _euo_err
-    #define euo_some _euo_some
-    #define euo_none _euo_none
-    #define euo_failed _euo_failed
-    #define euo_absent _euo_absent
-    #define euo_val _euo_val
-    #define euo_errcode _euo_errcode
-    #if !_euo_flag(pedantic)
-        #define euo_try _euo_try
-    #endif
+#if _euo_flag(static_implementation)
+    #define _euo_attr [[gnu::const, nodiscard, maybe_unused]] static
+    #define _euo_symbols(i, T) \
+        _euo_define_types(i, T) _euo_define_functions(i, T)
 #else
+    #define _euo_attr [[gnu::const, nodiscard]]
+    #if _euo_flag(implementation)
+        #define _euo_symbols(i, T)                               \
+            _euo_define_types(i, T) _euo_declare_functions(i, T) \
+                _euo_define_functions(i, T)
+    #else
+        #define _euo_symbols(i, T) \
+            _euo_define_types(i, T) _euo_declare_functions(i, T)
+    #endif
+#endif
+
+#if _euo_flag(short_names)
     #define Err _euo_Err
     #define Opt _euo_Opt
     #define ok _euo_ok
@@ -666,6 +724,20 @@
     #define errcode _euo_errcode
     #if !_euo_flag(pedantic)
         #define try _euo_try
+    #endif
+#else
+    #define euo_Err _euo_Err
+    #define euo_Opt _euo_Opt
+    #define euo_ok _euo_ok
+    #define euo_err _euo_err
+    #define euo_some _euo_some
+    #define euo_none _euo_none
+    #define euo_failed _euo_failed
+    #define euo_absent _euo_absent
+    #define euo_val _euo_val
+    #define euo_errcode _euo_errcode
+    #if !_euo_flag(pedantic)
+        #define euo_try _euo_try
     #endif
 #endif
 
@@ -695,4 +767,4 @@
 typedef struct _euo_Void {
     _euo_void_fields
 } _euo_Void;
-_euo_map(_euo_declare, _euo_types)
+_euo_map(_euo_symbols, _euo_types)

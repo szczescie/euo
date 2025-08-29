@@ -6,6 +6,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define euo_types u32, u64
+#define euo_flags implementation, short_names
 #include "euo.h"
 
 Opt(u32) downcast(u64 number) {
