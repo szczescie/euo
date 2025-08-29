@@ -1,9 +1,8 @@
 #pragma once
 
-#include <stdint.h>
-
 // conditionally included:
 // <assert.h>
+// <stdint.h>
 
 // #region arity selection
 #define _euo_arity_inner(                                                      \
@@ -676,6 +675,7 @@
 #endif
 
 #if !defined euo_error_type || _euo_is_empty(euo_error_type)
+    #include <stdint.h>
     #define _euo_ErrorCode uint_fast16_t
 #else
     #define _euo_ErrorCode euo_error_type
