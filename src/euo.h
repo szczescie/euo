@@ -25,26 +25,63 @@
     _213, _214, _215, _216, _217, _218, _219, _220, _221, _222, _223, _224,    \
     _225, _226, _227, _228, _229, _230, _231, _232, _233, _234, _235, _236,    \
     _237, _238, _239, _240, _241, _242, _243, _244, _245, _246, _247, _248,    \
-    _249, _250, _251, _252, _253, _254, _255, count, ...                       \
+    _249, _250, _251, _252, _253, _254, _255, _256, _257, _258, _259, _260,    \
+    _261, _262, _263, _264, _265, _266, _267, _268, _269, _270, _271, _272,    \
+    _273, _274, _275, _276, _277, _278, _279, _280, _281, _282, _283, _284,    \
+    _285, _286, _287, _288, _289, _290, _291, _292, _293, _294, _295, _296,    \
+    _297, _298, _299, _300, _301, _302, _303, _304, _305, _306, _307, _308,    \
+    _309, _310, _311, _312, _313, _314, _315, _316, _317, _318, _319, _320,    \
+    _321, _322, _323, _324, _325, _326, _327, _328, _329, _330, _331, _332,    \
+    _333, _334, _335, _336, _337, _338, _339, _340, _341, _342, _343, _344,    \
+    _345, _346, _347, _348, _349, _350, _351, _352, _353, _354, _355, _356,    \
+    _357, _358, _359, _360, _361, _362, _363, _364, _365, _366, _367, _368,    \
+    _369, _370, _371, _372, _373, _374, _375, _376, _377, _378, _379, _380,    \
+    _381, _382, _383, _384, _385, _386, _387, _388, _389, _390, _391, _392,    \
+    _393, _394, _395, _396, _397, _398, _399, _400, _401, _402, _403, _404,    \
+    _405, _406, _407, _408, _409, _410, _411, _412, _413, _414, _415, _416,    \
+    _417, _418, _419, _420, _421, _422, _423, _424, _425, _426, _427, _428,    \
+    _429, _430, _431, _432, _433, _434, _435, _436, _437, _438, _439, _440,    \
+    _441, _442, _443, _444, _445, _446, _447, _448, _449, _450, _451, _452,    \
+    _453, _454, _455, _456, _457, _458, _459, _460, _461, _462, _463, _464,    \
+    _465, _466, _467, _468, _469, _470, _471, _472, _473, _474, _475, _476,    \
+    _477, _478, _479, _480, _481, _482, _483, _484, _485, _486, _487, _488,    \
+    _489, _490, _491, _492, _493, _494, _495, _496, _497, _498, _499, _500,    \
+    _501, count, ...                                                           \
 ) count
 #define _euo_arity(...) _euo_arity_inner(                                      \
-    __VA_OPT__(, ) __VA_ARGS__, 255, 254, 253, 252, 251, 250, 249, 248, 247,   \
-    246, 245, 244, 243, 242, 241, 240, 239, 238, 237, 236, 235, 234, 233, 232, \
-    231, 230, 229, 228, 227, 226, 225, 224, 223, 222, 221, 220, 219, 218, 217, \
-    216, 215, 214, 213, 212, 211, 210, 209, 208, 207, 206, 205, 204, 203, 202, \
-    201, 200, 199, 198, 197, 196, 195, 194, 193, 192, 191, 190, 189, 188, 187, \
-    186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176, 175, 174, 173, 172, \
-    171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160, 159, 158, 157, \
-    156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 144, 143, 142, \
-    141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128, 127, \
-    126, 125, 124, 123, 122, 121, 120, 119, 118, 117, 116, 115, 114, 113, 112, \
-    111, 110, 109, 108, 107, 106, 105, 104, 103, 102, 101, 100, 99, 98, 97,    \
-    96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, 84, 83, 82, 81, 80, 79,    \
-    78, 77, 76, 75, 74, 73, 72, 71, 70, 69, 68, 67, 66, 65, 64, 63, 62, 61,    \
-    60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43,    \
-    42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25,    \
-    24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, \
-    4, 3, 2, 1, 0                                                              \
+    __VA_OPT__(, ) __VA_ARGS__, 501, 500, 499, 498, 497, 496, 495, 494, 493,   \
+    492, 491, 490, 489, 488, 487, 486, 485, 484, 483, 482, 481, 480, 479, 478, \
+    477, 476, 475, 474, 473, 472, 471, 470, 469, 468, 467, 466, 465, 464, 463, \
+    462, 461, 460, 459, 458, 457, 456, 455, 454, 453, 452, 451, 450, 449, 448, \
+    447, 446, 445, 444, 443, 442, 441, 440, 439, 438, 437, 436, 435, 434, 433, \
+    432, 431, 430, 429, 428, 427, 426, 425, 424, 423, 422, 421, 420, 419, 418, \
+    417, 416, 415, 414, 413, 412, 411, 410, 409, 408, 407, 406, 405, 404, 403, \
+    402, 401, 400, 399, 398, 397, 396, 395, 394, 393, 392, 391, 390, 389, 388, \
+    387, 386, 385, 384, 383, 382, 381, 380, 379, 378, 377, 376, 375, 374, 373, \
+    372, 371, 370, 369, 368, 367, 366, 365, 364, 363, 362, 361, 360, 359, 358, \
+    357, 356, 355, 354, 353, 352, 351, 350, 349, 348, 347, 346, 345, 344, 343, \
+    342, 341, 340, 339, 338, 337, 336, 335, 334, 333, 332, 331, 330, 329, 328, \
+    327, 326, 325, 324, 323, 322, 321, 320, 319, 318, 317, 316, 315, 314, 313, \
+    312, 311, 310, 309, 308, 307, 306, 305, 304, 303, 302, 301, 300, 299, 298, \
+    297, 296, 295, 294, 293, 292, 291, 290, 289, 288, 287, 286, 285, 284, 283, \
+    282, 281, 280, 279, 278, 277, 276, 275, 274, 273, 272, 271, 270, 269, 268, \
+    267, 266, 265, 264, 263, 262, 261, 260, 259, 258, 257, 256, 255, 254, 253, \
+    252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240, 239, 238, \
+    237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224, 223, \
+    222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208, \
+    207, 206, 205, 204, 203, 202, 201, 200, 199, 198, 197, 196, 195, 194, 193, \
+    192, 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, \
+    177, 176, 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, \
+    162, 161, 160, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, \
+    147, 146, 145, 144, 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, \
+    132, 131, 130, 129, 128, 127, 126, 125, 124, 123, 122, 121, 120, 119, 118, \
+    117, 116, 115, 114, 113, 112, 111, 110, 109, 108, 107, 106, 105, 104, 103, \
+    102, 101, 100, 99, 98, 97, 96, 95, 94, 93, 92, 91, 90, 89, 88, 87, 86, 85, \
+    84, 83, 82, 81, 80, 79, 78, 77, 76, 75, 74, 73, 72, 71, 70, 69, 68, 67,    \
+    66, 65, 64, 63, 62, 61, 60, 59, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49,    \
+    48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31,    \
+    30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13,    \
+    12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0                                   \
 )
 // #endregion
 
@@ -305,6 +342,252 @@
 #define _euo_map_253(f, x, ...) _euo_map_252(f, __VA_ARGS__) f(252, x)
 #define _euo_map_254(f, x, ...) _euo_map_253(f, __VA_ARGS__) f(253, x)
 #define _euo_map_255(f, x, ...) _euo_map_254(f, __VA_ARGS__) f(254, x)
+#define _euo_map_256(f, x, ...) _euo_map_255(f, __VA_ARGS__) f(255, x)
+#define _euo_map_257(f, x, ...) _euo_map_256(f, __VA_ARGS__) f(256, x)
+#define _euo_map_258(f, x, ...) _euo_map_257(f, __VA_ARGS__) f(257, x)
+#define _euo_map_259(f, x, ...) _euo_map_258(f, __VA_ARGS__) f(258, x)
+#define _euo_map_260(f, x, ...) _euo_map_259(f, __VA_ARGS__) f(259, x)
+#define _euo_map_261(f, x, ...) _euo_map_260(f, __VA_ARGS__) f(260, x)
+#define _euo_map_262(f, x, ...) _euo_map_261(f, __VA_ARGS__) f(261, x)
+#define _euo_map_263(f, x, ...) _euo_map_262(f, __VA_ARGS__) f(262, x)
+#define _euo_map_264(f, x, ...) _euo_map_263(f, __VA_ARGS__) f(263, x)
+#define _euo_map_265(f, x, ...) _euo_map_264(f, __VA_ARGS__) f(264, x)
+#define _euo_map_266(f, x, ...) _euo_map_265(f, __VA_ARGS__) f(265, x)
+#define _euo_map_267(f, x, ...) _euo_map_266(f, __VA_ARGS__) f(266, x)
+#define _euo_map_268(f, x, ...) _euo_map_267(f, __VA_ARGS__) f(267, x)
+#define _euo_map_269(f, x, ...) _euo_map_268(f, __VA_ARGS__) f(268, x)
+#define _euo_map_270(f, x, ...) _euo_map_269(f, __VA_ARGS__) f(269, x)
+#define _euo_map_271(f, x, ...) _euo_map_270(f, __VA_ARGS__) f(270, x)
+#define _euo_map_272(f, x, ...) _euo_map_271(f, __VA_ARGS__) f(271, x)
+#define _euo_map_273(f, x, ...) _euo_map_272(f, __VA_ARGS__) f(272, x)
+#define _euo_map_274(f, x, ...) _euo_map_273(f, __VA_ARGS__) f(273, x)
+#define _euo_map_275(f, x, ...) _euo_map_274(f, __VA_ARGS__) f(274, x)
+#define _euo_map_276(f, x, ...) _euo_map_275(f, __VA_ARGS__) f(275, x)
+#define _euo_map_277(f, x, ...) _euo_map_276(f, __VA_ARGS__) f(276, x)
+#define _euo_map_278(f, x, ...) _euo_map_277(f, __VA_ARGS__) f(277, x)
+#define _euo_map_279(f, x, ...) _euo_map_278(f, __VA_ARGS__) f(278, x)
+#define _euo_map_280(f, x, ...) _euo_map_279(f, __VA_ARGS__) f(279, x)
+#define _euo_map_281(f, x, ...) _euo_map_280(f, __VA_ARGS__) f(280, x)
+#define _euo_map_282(f, x, ...) _euo_map_281(f, __VA_ARGS__) f(281, x)
+#define _euo_map_283(f, x, ...) _euo_map_282(f, __VA_ARGS__) f(282, x)
+#define _euo_map_284(f, x, ...) _euo_map_283(f, __VA_ARGS__) f(283, x)
+#define _euo_map_285(f, x, ...) _euo_map_284(f, __VA_ARGS__) f(284, x)
+#define _euo_map_286(f, x, ...) _euo_map_285(f, __VA_ARGS__) f(285, x)
+#define _euo_map_287(f, x, ...) _euo_map_286(f, __VA_ARGS__) f(286, x)
+#define _euo_map_288(f, x, ...) _euo_map_287(f, __VA_ARGS__) f(287, x)
+#define _euo_map_289(f, x, ...) _euo_map_288(f, __VA_ARGS__) f(288, x)
+#define _euo_map_290(f, x, ...) _euo_map_289(f, __VA_ARGS__) f(289, x)
+#define _euo_map_291(f, x, ...) _euo_map_290(f, __VA_ARGS__) f(290, x)
+#define _euo_map_292(f, x, ...) _euo_map_291(f, __VA_ARGS__) f(291, x)
+#define _euo_map_293(f, x, ...) _euo_map_292(f, __VA_ARGS__) f(292, x)
+#define _euo_map_294(f, x, ...) _euo_map_293(f, __VA_ARGS__) f(293, x)
+#define _euo_map_295(f, x, ...) _euo_map_294(f, __VA_ARGS__) f(294, x)
+#define _euo_map_296(f, x, ...) _euo_map_295(f, __VA_ARGS__) f(295, x)
+#define _euo_map_297(f, x, ...) _euo_map_296(f, __VA_ARGS__) f(296, x)
+#define _euo_map_298(f, x, ...) _euo_map_297(f, __VA_ARGS__) f(297, x)
+#define _euo_map_299(f, x, ...) _euo_map_298(f, __VA_ARGS__) f(298, x)
+#define _euo_map_300(f, x, ...) _euo_map_299(f, __VA_ARGS__) f(299, x)
+#define _euo_map_301(f, x, ...) _euo_map_300(f, __VA_ARGS__) f(300, x)
+#define _euo_map_302(f, x, ...) _euo_map_301(f, __VA_ARGS__) f(301, x)
+#define _euo_map_303(f, x, ...) _euo_map_302(f, __VA_ARGS__) f(302, x)
+#define _euo_map_304(f, x, ...) _euo_map_303(f, __VA_ARGS__) f(303, x)
+#define _euo_map_305(f, x, ...) _euo_map_304(f, __VA_ARGS__) f(304, x)
+#define _euo_map_306(f, x, ...) _euo_map_305(f, __VA_ARGS__) f(305, x)
+#define _euo_map_307(f, x, ...) _euo_map_306(f, __VA_ARGS__) f(306, x)
+#define _euo_map_308(f, x, ...) _euo_map_307(f, __VA_ARGS__) f(307, x)
+#define _euo_map_309(f, x, ...) _euo_map_308(f, __VA_ARGS__) f(308, x)
+#define _euo_map_310(f, x, ...) _euo_map_309(f, __VA_ARGS__) f(309, x)
+#define _euo_map_311(f, x, ...) _euo_map_310(f, __VA_ARGS__) f(310, x)
+#define _euo_map_312(f, x, ...) _euo_map_311(f, __VA_ARGS__) f(311, x)
+#define _euo_map_313(f, x, ...) _euo_map_312(f, __VA_ARGS__) f(312, x)
+#define _euo_map_314(f, x, ...) _euo_map_313(f, __VA_ARGS__) f(313, x)
+#define _euo_map_315(f, x, ...) _euo_map_314(f, __VA_ARGS__) f(314, x)
+#define _euo_map_316(f, x, ...) _euo_map_315(f, __VA_ARGS__) f(315, x)
+#define _euo_map_317(f, x, ...) _euo_map_316(f, __VA_ARGS__) f(316, x)
+#define _euo_map_318(f, x, ...) _euo_map_317(f, __VA_ARGS__) f(317, x)
+#define _euo_map_319(f, x, ...) _euo_map_318(f, __VA_ARGS__) f(318, x)
+#define _euo_map_320(f, x, ...) _euo_map_319(f, __VA_ARGS__) f(319, x)
+#define _euo_map_321(f, x, ...) _euo_map_320(f, __VA_ARGS__) f(320, x)
+#define _euo_map_322(f, x, ...) _euo_map_321(f, __VA_ARGS__) f(321, x)
+#define _euo_map_323(f, x, ...) _euo_map_322(f, __VA_ARGS__) f(322, x)
+#define _euo_map_324(f, x, ...) _euo_map_323(f, __VA_ARGS__) f(323, x)
+#define _euo_map_325(f, x, ...) _euo_map_324(f, __VA_ARGS__) f(324, x)
+#define _euo_map_326(f, x, ...) _euo_map_325(f, __VA_ARGS__) f(325, x)
+#define _euo_map_327(f, x, ...) _euo_map_326(f, __VA_ARGS__) f(326, x)
+#define _euo_map_328(f, x, ...) _euo_map_327(f, __VA_ARGS__) f(327, x)
+#define _euo_map_329(f, x, ...) _euo_map_328(f, __VA_ARGS__) f(328, x)
+#define _euo_map_330(f, x, ...) _euo_map_329(f, __VA_ARGS__) f(329, x)
+#define _euo_map_331(f, x, ...) _euo_map_330(f, __VA_ARGS__) f(330, x)
+#define _euo_map_332(f, x, ...) _euo_map_331(f, __VA_ARGS__) f(331, x)
+#define _euo_map_333(f, x, ...) _euo_map_332(f, __VA_ARGS__) f(332, x)
+#define _euo_map_334(f, x, ...) _euo_map_333(f, __VA_ARGS__) f(333, x)
+#define _euo_map_335(f, x, ...) _euo_map_334(f, __VA_ARGS__) f(334, x)
+#define _euo_map_336(f, x, ...) _euo_map_335(f, __VA_ARGS__) f(335, x)
+#define _euo_map_337(f, x, ...) _euo_map_336(f, __VA_ARGS__) f(336, x)
+#define _euo_map_338(f, x, ...) _euo_map_337(f, __VA_ARGS__) f(337, x)
+#define _euo_map_339(f, x, ...) _euo_map_338(f, __VA_ARGS__) f(338, x)
+#define _euo_map_340(f, x, ...) _euo_map_339(f, __VA_ARGS__) f(339, x)
+#define _euo_map_341(f, x, ...) _euo_map_340(f, __VA_ARGS__) f(340, x)
+#define _euo_map_342(f, x, ...) _euo_map_341(f, __VA_ARGS__) f(341, x)
+#define _euo_map_343(f, x, ...) _euo_map_342(f, __VA_ARGS__) f(342, x)
+#define _euo_map_344(f, x, ...) _euo_map_343(f, __VA_ARGS__) f(343, x)
+#define _euo_map_345(f, x, ...) _euo_map_344(f, __VA_ARGS__) f(344, x)
+#define _euo_map_346(f, x, ...) _euo_map_345(f, __VA_ARGS__) f(345, x)
+#define _euo_map_347(f, x, ...) _euo_map_346(f, __VA_ARGS__) f(346, x)
+#define _euo_map_348(f, x, ...) _euo_map_347(f, __VA_ARGS__) f(347, x)
+#define _euo_map_349(f, x, ...) _euo_map_348(f, __VA_ARGS__) f(348, x)
+#define _euo_map_350(f, x, ...) _euo_map_349(f, __VA_ARGS__) f(349, x)
+#define _euo_map_351(f, x, ...) _euo_map_350(f, __VA_ARGS__) f(350, x)
+#define _euo_map_352(f, x, ...) _euo_map_351(f, __VA_ARGS__) f(351, x)
+#define _euo_map_353(f, x, ...) _euo_map_352(f, __VA_ARGS__) f(352, x)
+#define _euo_map_354(f, x, ...) _euo_map_353(f, __VA_ARGS__) f(353, x)
+#define _euo_map_355(f, x, ...) _euo_map_354(f, __VA_ARGS__) f(354, x)
+#define _euo_map_356(f, x, ...) _euo_map_355(f, __VA_ARGS__) f(355, x)
+#define _euo_map_357(f, x, ...) _euo_map_356(f, __VA_ARGS__) f(356, x)
+#define _euo_map_358(f, x, ...) _euo_map_357(f, __VA_ARGS__) f(357, x)
+#define _euo_map_359(f, x, ...) _euo_map_358(f, __VA_ARGS__) f(358, x)
+#define _euo_map_360(f, x, ...) _euo_map_359(f, __VA_ARGS__) f(359, x)
+#define _euo_map_361(f, x, ...) _euo_map_360(f, __VA_ARGS__) f(360, x)
+#define _euo_map_362(f, x, ...) _euo_map_361(f, __VA_ARGS__) f(361, x)
+#define _euo_map_363(f, x, ...) _euo_map_362(f, __VA_ARGS__) f(362, x)
+#define _euo_map_364(f, x, ...) _euo_map_363(f, __VA_ARGS__) f(363, x)
+#define _euo_map_365(f, x, ...) _euo_map_364(f, __VA_ARGS__) f(364, x)
+#define _euo_map_366(f, x, ...) _euo_map_365(f, __VA_ARGS__) f(365, x)
+#define _euo_map_367(f, x, ...) _euo_map_366(f, __VA_ARGS__) f(366, x)
+#define _euo_map_368(f, x, ...) _euo_map_367(f, __VA_ARGS__) f(367, x)
+#define _euo_map_369(f, x, ...) _euo_map_368(f, __VA_ARGS__) f(368, x)
+#define _euo_map_370(f, x, ...) _euo_map_369(f, __VA_ARGS__) f(369, x)
+#define _euo_map_371(f, x, ...) _euo_map_370(f, __VA_ARGS__) f(370, x)
+#define _euo_map_372(f, x, ...) _euo_map_371(f, __VA_ARGS__) f(371, x)
+#define _euo_map_373(f, x, ...) _euo_map_372(f, __VA_ARGS__) f(372, x)
+#define _euo_map_374(f, x, ...) _euo_map_373(f, __VA_ARGS__) f(373, x)
+#define _euo_map_375(f, x, ...) _euo_map_374(f, __VA_ARGS__) f(374, x)
+#define _euo_map_376(f, x, ...) _euo_map_375(f, __VA_ARGS__) f(375, x)
+#define _euo_map_377(f, x, ...) _euo_map_376(f, __VA_ARGS__) f(376, x)
+#define _euo_map_378(f, x, ...) _euo_map_377(f, __VA_ARGS__) f(377, x)
+#define _euo_map_379(f, x, ...) _euo_map_378(f, __VA_ARGS__) f(378, x)
+#define _euo_map_380(f, x, ...) _euo_map_379(f, __VA_ARGS__) f(379, x)
+#define _euo_map_381(f, x, ...) _euo_map_380(f, __VA_ARGS__) f(380, x)
+#define _euo_map_382(f, x, ...) _euo_map_381(f, __VA_ARGS__) f(381, x)
+#define _euo_map_383(f, x, ...) _euo_map_382(f, __VA_ARGS__) f(382, x)
+#define _euo_map_384(f, x, ...) _euo_map_383(f, __VA_ARGS__) f(383, x)
+#define _euo_map_385(f, x, ...) _euo_map_384(f, __VA_ARGS__) f(384, x)
+#define _euo_map_386(f, x, ...) _euo_map_385(f, __VA_ARGS__) f(385, x)
+#define _euo_map_387(f, x, ...) _euo_map_386(f, __VA_ARGS__) f(386, x)
+#define _euo_map_388(f, x, ...) _euo_map_387(f, __VA_ARGS__) f(387, x)
+#define _euo_map_389(f, x, ...) _euo_map_388(f, __VA_ARGS__) f(388, x)
+#define _euo_map_390(f, x, ...) _euo_map_389(f, __VA_ARGS__) f(389, x)
+#define _euo_map_391(f, x, ...) _euo_map_390(f, __VA_ARGS__) f(390, x)
+#define _euo_map_392(f, x, ...) _euo_map_391(f, __VA_ARGS__) f(391, x)
+#define _euo_map_393(f, x, ...) _euo_map_392(f, __VA_ARGS__) f(392, x)
+#define _euo_map_394(f, x, ...) _euo_map_393(f, __VA_ARGS__) f(393, x)
+#define _euo_map_395(f, x, ...) _euo_map_394(f, __VA_ARGS__) f(394, x)
+#define _euo_map_396(f, x, ...) _euo_map_395(f, __VA_ARGS__) f(395, x)
+#define _euo_map_397(f, x, ...) _euo_map_396(f, __VA_ARGS__) f(396, x)
+#define _euo_map_398(f, x, ...) _euo_map_397(f, __VA_ARGS__) f(397, x)
+#define _euo_map_399(f, x, ...) _euo_map_398(f, __VA_ARGS__) f(398, x)
+#define _euo_map_400(f, x, ...) _euo_map_399(f, __VA_ARGS__) f(399, x)
+#define _euo_map_401(f, x, ...) _euo_map_400(f, __VA_ARGS__) f(400, x)
+#define _euo_map_402(f, x, ...) _euo_map_401(f, __VA_ARGS__) f(401, x)
+#define _euo_map_403(f, x, ...) _euo_map_402(f, __VA_ARGS__) f(402, x)
+#define _euo_map_404(f, x, ...) _euo_map_403(f, __VA_ARGS__) f(403, x)
+#define _euo_map_405(f, x, ...) _euo_map_404(f, __VA_ARGS__) f(404, x)
+#define _euo_map_406(f, x, ...) _euo_map_405(f, __VA_ARGS__) f(405, x)
+#define _euo_map_407(f, x, ...) _euo_map_406(f, __VA_ARGS__) f(406, x)
+#define _euo_map_408(f, x, ...) _euo_map_407(f, __VA_ARGS__) f(407, x)
+#define _euo_map_409(f, x, ...) _euo_map_408(f, __VA_ARGS__) f(408, x)
+#define _euo_map_410(f, x, ...) _euo_map_409(f, __VA_ARGS__) f(409, x)
+#define _euo_map_411(f, x, ...) _euo_map_410(f, __VA_ARGS__) f(410, x)
+#define _euo_map_412(f, x, ...) _euo_map_411(f, __VA_ARGS__) f(411, x)
+#define _euo_map_413(f, x, ...) _euo_map_412(f, __VA_ARGS__) f(412, x)
+#define _euo_map_414(f, x, ...) _euo_map_413(f, __VA_ARGS__) f(413, x)
+#define _euo_map_415(f, x, ...) _euo_map_414(f, __VA_ARGS__) f(414, x)
+#define _euo_map_416(f, x, ...) _euo_map_415(f, __VA_ARGS__) f(415, x)
+#define _euo_map_417(f, x, ...) _euo_map_416(f, __VA_ARGS__) f(416, x)
+#define _euo_map_418(f, x, ...) _euo_map_417(f, __VA_ARGS__) f(417, x)
+#define _euo_map_419(f, x, ...) _euo_map_418(f, __VA_ARGS__) f(418, x)
+#define _euo_map_420(f, x, ...) _euo_map_419(f, __VA_ARGS__) f(419, x)
+#define _euo_map_421(f, x, ...) _euo_map_420(f, __VA_ARGS__) f(420, x)
+#define _euo_map_422(f, x, ...) _euo_map_421(f, __VA_ARGS__) f(421, x)
+#define _euo_map_423(f, x, ...) _euo_map_422(f, __VA_ARGS__) f(422, x)
+#define _euo_map_424(f, x, ...) _euo_map_423(f, __VA_ARGS__) f(423, x)
+#define _euo_map_425(f, x, ...) _euo_map_424(f, __VA_ARGS__) f(424, x)
+#define _euo_map_426(f, x, ...) _euo_map_425(f, __VA_ARGS__) f(425, x)
+#define _euo_map_427(f, x, ...) _euo_map_426(f, __VA_ARGS__) f(426, x)
+#define _euo_map_428(f, x, ...) _euo_map_427(f, __VA_ARGS__) f(427, x)
+#define _euo_map_429(f, x, ...) _euo_map_428(f, __VA_ARGS__) f(428, x)
+#define _euo_map_430(f, x, ...) _euo_map_429(f, __VA_ARGS__) f(429, x)
+#define _euo_map_431(f, x, ...) _euo_map_430(f, __VA_ARGS__) f(430, x)
+#define _euo_map_432(f, x, ...) _euo_map_431(f, __VA_ARGS__) f(431, x)
+#define _euo_map_433(f, x, ...) _euo_map_432(f, __VA_ARGS__) f(432, x)
+#define _euo_map_434(f, x, ...) _euo_map_433(f, __VA_ARGS__) f(433, x)
+#define _euo_map_435(f, x, ...) _euo_map_434(f, __VA_ARGS__) f(434, x)
+#define _euo_map_436(f, x, ...) _euo_map_435(f, __VA_ARGS__) f(435, x)
+#define _euo_map_437(f, x, ...) _euo_map_436(f, __VA_ARGS__) f(436, x)
+#define _euo_map_438(f, x, ...) _euo_map_437(f, __VA_ARGS__) f(437, x)
+#define _euo_map_439(f, x, ...) _euo_map_438(f, __VA_ARGS__) f(438, x)
+#define _euo_map_440(f, x, ...) _euo_map_439(f, __VA_ARGS__) f(439, x)
+#define _euo_map_441(f, x, ...) _euo_map_440(f, __VA_ARGS__) f(440, x)
+#define _euo_map_442(f, x, ...) _euo_map_441(f, __VA_ARGS__) f(441, x)
+#define _euo_map_443(f, x, ...) _euo_map_442(f, __VA_ARGS__) f(442, x)
+#define _euo_map_444(f, x, ...) _euo_map_443(f, __VA_ARGS__) f(443, x)
+#define _euo_map_445(f, x, ...) _euo_map_444(f, __VA_ARGS__) f(444, x)
+#define _euo_map_446(f, x, ...) _euo_map_445(f, __VA_ARGS__) f(445, x)
+#define _euo_map_447(f, x, ...) _euo_map_446(f, __VA_ARGS__) f(446, x)
+#define _euo_map_448(f, x, ...) _euo_map_447(f, __VA_ARGS__) f(447, x)
+#define _euo_map_449(f, x, ...) _euo_map_448(f, __VA_ARGS__) f(448, x)
+#define _euo_map_450(f, x, ...) _euo_map_449(f, __VA_ARGS__) f(449, x)
+#define _euo_map_451(f, x, ...) _euo_map_450(f, __VA_ARGS__) f(450, x)
+#define _euo_map_452(f, x, ...) _euo_map_451(f, __VA_ARGS__) f(451, x)
+#define _euo_map_453(f, x, ...) _euo_map_452(f, __VA_ARGS__) f(452, x)
+#define _euo_map_454(f, x, ...) _euo_map_453(f, __VA_ARGS__) f(453, x)
+#define _euo_map_455(f, x, ...) _euo_map_454(f, __VA_ARGS__) f(454, x)
+#define _euo_map_456(f, x, ...) _euo_map_455(f, __VA_ARGS__) f(455, x)
+#define _euo_map_457(f, x, ...) _euo_map_456(f, __VA_ARGS__) f(456, x)
+#define _euo_map_458(f, x, ...) _euo_map_457(f, __VA_ARGS__) f(457, x)
+#define _euo_map_459(f, x, ...) _euo_map_458(f, __VA_ARGS__) f(458, x)
+#define _euo_map_460(f, x, ...) _euo_map_459(f, __VA_ARGS__) f(459, x)
+#define _euo_map_461(f, x, ...) _euo_map_460(f, __VA_ARGS__) f(460, x)
+#define _euo_map_462(f, x, ...) _euo_map_461(f, __VA_ARGS__) f(461, x)
+#define _euo_map_463(f, x, ...) _euo_map_462(f, __VA_ARGS__) f(462, x)
+#define _euo_map_464(f, x, ...) _euo_map_463(f, __VA_ARGS__) f(463, x)
+#define _euo_map_465(f, x, ...) _euo_map_464(f, __VA_ARGS__) f(464, x)
+#define _euo_map_466(f, x, ...) _euo_map_465(f, __VA_ARGS__) f(465, x)
+#define _euo_map_467(f, x, ...) _euo_map_466(f, __VA_ARGS__) f(466, x)
+#define _euo_map_468(f, x, ...) _euo_map_467(f, __VA_ARGS__) f(467, x)
+#define _euo_map_469(f, x, ...) _euo_map_468(f, __VA_ARGS__) f(468, x)
+#define _euo_map_470(f, x, ...) _euo_map_469(f, __VA_ARGS__) f(469, x)
+#define _euo_map_471(f, x, ...) _euo_map_470(f, __VA_ARGS__) f(470, x)
+#define _euo_map_472(f, x, ...) _euo_map_471(f, __VA_ARGS__) f(471, x)
+#define _euo_map_473(f, x, ...) _euo_map_472(f, __VA_ARGS__) f(472, x)
+#define _euo_map_474(f, x, ...) _euo_map_473(f, __VA_ARGS__) f(473, x)
+#define _euo_map_475(f, x, ...) _euo_map_474(f, __VA_ARGS__) f(474, x)
+#define _euo_map_476(f, x, ...) _euo_map_475(f, __VA_ARGS__) f(475, x)
+#define _euo_map_477(f, x, ...) _euo_map_476(f, __VA_ARGS__) f(476, x)
+#define _euo_map_478(f, x, ...) _euo_map_477(f, __VA_ARGS__) f(477, x)
+#define _euo_map_479(f, x, ...) _euo_map_478(f, __VA_ARGS__) f(478, x)
+#define _euo_map_480(f, x, ...) _euo_map_479(f, __VA_ARGS__) f(479, x)
+#define _euo_map_481(f, x, ...) _euo_map_480(f, __VA_ARGS__) f(480, x)
+#define _euo_map_482(f, x, ...) _euo_map_481(f, __VA_ARGS__) f(481, x)
+#define _euo_map_483(f, x, ...) _euo_map_482(f, __VA_ARGS__) f(482, x)
+#define _euo_map_484(f, x, ...) _euo_map_483(f, __VA_ARGS__) f(483, x)
+#define _euo_map_485(f, x, ...) _euo_map_484(f, __VA_ARGS__) f(484, x)
+#define _euo_map_486(f, x, ...) _euo_map_485(f, __VA_ARGS__) f(485, x)
+#define _euo_map_487(f, x, ...) _euo_map_486(f, __VA_ARGS__) f(486, x)
+#define _euo_map_488(f, x, ...) _euo_map_487(f, __VA_ARGS__) f(487, x)
+#define _euo_map_489(f, x, ...) _euo_map_488(f, __VA_ARGS__) f(488, x)
+#define _euo_map_490(f, x, ...) _euo_map_489(f, __VA_ARGS__) f(489, x)
+#define _euo_map_491(f, x, ...) _euo_map_490(f, __VA_ARGS__) f(490, x)
+#define _euo_map_492(f, x, ...) _euo_map_491(f, __VA_ARGS__) f(491, x)
+#define _euo_map_493(f, x, ...) _euo_map_492(f, __VA_ARGS__) f(492, x)
+#define _euo_map_494(f, x, ...) _euo_map_493(f, __VA_ARGS__) f(493, x)
+#define _euo_map_495(f, x, ...) _euo_map_494(f, __VA_ARGS__) f(494, x)
+#define _euo_map_496(f, x, ...) _euo_map_495(f, __VA_ARGS__) f(495, x)
+#define _euo_map_497(f, x, ...) _euo_map_496(f, __VA_ARGS__) f(496, x)
+#define _euo_map_498(f, x, ...) _euo_map_497(f, __VA_ARGS__) f(497, x)
+#define _euo_map_499(f, x, ...) _euo_map_498(f, __VA_ARGS__) f(498, x)
+#define _euo_map_500(f, x, ...) _euo_map_499(f, __VA_ARGS__) f(499, x)
+#define _euo_map_501(f, x, ...) _euo_map_500(f, __VA_ARGS__) f(500, x)
 
 #define _euo_cat_inner(a, b) a##b
 #define _euo_cat(a, b) _euo_cat_inner(a, b)
