@@ -1,5 +1,6 @@
 AlignAfterOpenBracket: BlockIndent
 AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
 ColumnLimit: 0
 Cpp11BracedListStyle: false
 IndentPPDirectives: BeforeHash

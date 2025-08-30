@@ -16,3 +16,4 @@ CompileFlags:
         - -Wno-padded
         - -Wno-reserved-identifier
         - -Wno-gnu-empty-struct
+        - -Wno-unsafe-buffer-usage
