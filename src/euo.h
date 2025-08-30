@@ -753,7 +753,7 @@
 
     #define _euo_void_fields
 #else
-    #define _euo_void_fields bool _;
+    #define _euo_void_fields bool _euo_void;
 #endif
 
 #if _euo_flag(no_assert) || defined NDEBUG
@@ -764,7 +764,34 @@
 #endif
 // #endregion
 
+// #region actual code
 typedef struct _euo_Void {
     _euo_void_fields
 } _euo_Void;
+
+#define _euo_pragma(directive) _Pragma(#directive)
+#define _euo_push(_, name) _euo_pragma(push_macro(#name))
+#define _euo_pop(_, name) _euo_pragma(pop_macro(#name))
+
+// clang-format off
+#define _euo_local_names error_active, value, payload, null_active, optional, \
+    null_active, optional, err_union, err_optional, value_field_is_active,    \
+    error_field_is_not_active, error_field_is_active
+
+_euo_map(_euo_push, _euo_local_names)
+
+#undef error_active
+#undef value
+#undef error
+#undef payload
+#undef null_active
+#undef optional
+#undef err_union
+#undef err_optional
+#undef value_field_is_active
+#undef error_field_is_not_active
+#undef error_field_is_active
+
 _euo_map(_euo_symbols, _euo_types)
+_euo_map(_euo_pop, _euo_local_names)
+// #endregion
