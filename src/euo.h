@@ -2131,6 +2131,8 @@
     #define _euo_val_optional_i(i) _euo_cat(_euo_val_optional_, i)
     #define _euo_errcode_i(i) _euo_cat(_euo_errcode_, i)
     #define _euo_errcode_opt_i(i) _euo_cat(_euo_errcode_opt_, i)
+    #define _euo_identity_i(i) _euo_cat(_euo_identity_, i)
+    #define _euo_identity_opt_i(i) _euo_cat(_euo_identity_opt_, i)
 
 // clang-format off
     #define _euo_entry_err_union(i, _)            \
@@ -2160,6 +2162,9 @@
     #define _euo_entry_errcode(i, _)             \
         , _euo_err_union_i(i): _euo_errcode_i(i) \
         , _euo_err_union_opt_i(i): _euo_errcode_opt_i(i)
+    #define _euo_entry_identity(i, _) \
+        , _euo_err_union_i(i): _euo_identity_i(i) \
+        , _euo_err_union_opt_i(i): _euo_identity_opt_i(i)
 // clang-format on
 
     // TODO: allow for duplicate types
@@ -2187,6 +2192,8 @@
         (_Generic((__VA_ARGS__) _euo_entries(_euo_entry_val))(__VA_ARGS__))
     #define _euo_errcode(...) \
         (_Generic((__VA_ARGS__) _euo_entries(_euo_entry_errcode))(__VA_ARGS__))
+    #define _euo_identity(...) \
+        (_Generic((__VA_ARGS__) _euo_entries(_euo_entry_identity))(__VA_ARGS__))
 // clang-format on
 
     #define _euo_Err_arity_0() _euo_Err_arity_n(_euo_Void)
@@ -2235,6 +2242,8 @@
     #define _euo_val_optional_c _euo_val_optional_i(_euo_counter)
     #define _euo_errcode_c _euo_errcode_i(_euo_counter)
     #define _euo_errcode_opt_c _euo_errcode_opt_i(_euo_counter)
+    #define _euo_identity_c _euo_identity_i(_euo_counter)
+    #define _euo_identity_opt_c _euo_identity_opt_i(_euo_counter)
 
     #define _euo_def_type(T) typedef T _euo_type_c;
 
@@ -2394,12 +2403,25 @@
             return err_optional.payload.error;                     \
         }
 
-    // TODO: add a function
-    #define _euo_try_arity_n(T, ...) ({                               \
-        register auto const _euo_err_union = (__VA_ARGS__);           \
-        if (_euo_failed(_euo_err_union))                              \
-            return _euo_err_arity_n(T, _euo_errcode(_euo_err_union)); \
-        _euo_val(_euo_err_union);                                     \
+    #define _euo_def_identity                         \
+        _euo_attr _euo_err_union_c _euo_identity_c(   \
+            register _euo_err_union_c const err_union \
+        ) {                                           \
+            return err_union;                         \
+        }
+
+    #define _euo_def_identity_opt                            \
+        _euo_attr _euo_err_union_opt_c _euo_identity_opt_c(  \
+            register _euo_err_union_opt_c const err_optional \
+        ) {                                                  \
+            return err_optional;                             \
+        }
+
+    #define _euo_try_arity_n(T, ...) ({                                  \
+        register auto const _euo_err_union = _euo_identity(__VA_ARGS__); \
+        if (_euo_failed(_euo_err_union))                                 \
+            return _euo_err_arity_n(T, _euo_errcode(_euo_err_union));    \
+        _euo_val(_euo_err_union);                                        \
     })
     #define _euo_try_arity_1(...) _euo_try_arity_n(_euo_Void, __VA_ARGS__)
     #define _euo_try(...) _euo_arity_1_or_n(_euo_try_arity_, __VA_ARGS__)
@@ -2428,6 +2450,8 @@
         _euo_def_val_optional      \
         _euo_def_errcode           \
         _euo_def_errcode_opt       \
+        _euo_def_identity          \
+        _euo_def_identity_opt      \
         _euo_pop(_, _euo_counter)
 // clang-format on
 // #endregion

@@ -88,6 +88,11 @@ static Err(bool) err_union_try() {
     assert(false);
 }
 
+static Err(bool) err_optional_try() {
+    [[maybe_unused]] auto const _ = __extension__ try(bool, ok(some(true)));
+    return ok(true);
+}
+
 static Err() err_union_void() {
     return true ? ok() : err(1);
 }
