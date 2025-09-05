@@ -14,7 +14,7 @@ typedef uint64_t u64;
 }
 
 [[gnu::format(printf, 1, 2)]] static void print(
-    char const* format,
+    register char const* format,
     ...
 ) {
     va_list args;
@@ -27,7 +27,7 @@ constexpr auto max_item_len = 32;
 
 [[gnu::format(printf, 2, 3)]] static u64 buf_print(
     register char* restrict buf,
-    char const* format,
+    register char const* format,
     ...
 ) {
     va_list args;
@@ -39,14 +39,13 @@ constexpr auto max_item_len = 32;
     return (u64)bytes_printed;
 }
 
-constexpr auto max_line_len = 80;
-
 static u64 print_item(
     register char const* restrict item,
     register u64 const line_len,
-    register u64 const item_len
+    register u64 const item_len,
+    register u64 const max_line_len
 ) {
-    auto const new_line_len = line_len + item_len;
+    register auto const new_line_len = line_len + item_len;
     if (new_line_len > max_line_len - 1) {
         print("\\\n    %s", item);
         return 4 + item_len;
@@ -59,16 +58,25 @@ int main(
     register int const argc,
     register char const* const argv[]
 ) {
-    if (argc != 2) exit(1);
-    auto const map_arity = parse_int(argv[1]);
+    if (argc != 3) exit(1);
+    register auto const max_types = parse_int(argv[1]);
+    register auto const max_line_len = parse_int(argv[2]);
+    register u64 line_len = {};
     char item[max_item_len] = {};
-    u64 line_len = {};
+
+    for (register u64 i = max_types - 1; i >= 1; i -= 1) print(
+        "#define _euo_counter %lu\n"
+        "#pragma push_macro(\"_euo_counter\")\n"
+        "#undef _euo_counter\n",
+        i
+    );
+    print("#define _euo_counter 0\n\n");
 
     print("#define _euo_arity_inner( \\\n    ");
     line_len = 4;
-    for (u64 i = 0; i <= map_arity; i += 1) {
-        auto const item_len = buf_print(item, "_%lu, ", i);
-        line_len = print_item(item, line_len, item_len);
+    for (register u64 i = 0; i <= max_types; i += 1) {
+        register auto const item_len = buf_print(item, "_%lu, ", i);
+        line_len = print_item(item, line_len, item_len, max_line_len);
     }
     print("count, ... \\\n) count\n");
 
@@ -77,17 +85,17 @@ int main(
         "    __VA_OPT__(, ) __VA_ARGS__, "
     );
     line_len = 32;
-    for (u64 i = map_arity; i >= 1; i -= 1) {
-        auto const item_len = buf_print(item, "%lu, ", i);
-        line_len = print_item(item, line_len, item_len);
+    for (register u64 i = max_types; i >= 1; i -= 1) {
+        register auto const item_len = buf_print(item, "%lu, ", i);
+        line_len = print_item(item, line_len, item_len, max_line_len);
     }
     print("0 \\\n)\n\n");
 
     print(
-        "#define _euo_map_0(_, __)\n"
-        "#define _euo_map_1(f, x) f(0, x)\n"
+        "#define _euo_map_0(...)\n"
+        "#define _euo_map_1(f, x, ...) f(0, x)\n"
     );
-    for (u64 i = 2; i <= map_arity; i += 1) print(
+    for (register u64 i = 2; i <= max_types; i += 1) print(
         "#define _euo_map_%lu(f, x, ...)"
         " _euo_map_%lu(f, __VA_ARGS__) f(%lu, x)\n",
         i, i - 1, i - 1

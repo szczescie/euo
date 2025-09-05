@@ -14,6 +14,7 @@
 // #region counter
     #define _euo_counter 500
     #pragma push_macro("_euo_counter")
+    #undef _euo_counter
     #define _euo_counter 499
     #pragma push_macro("_euo_counter")
     #undef _euo_counter
