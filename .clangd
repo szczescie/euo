@@ -1,6 +1,5 @@
 CompileFlags:
     Add:
-        - -xc
         - -std=c23
         - -O0
         - -g
@@ -14,6 +13,6 @@ CompileFlags:
         - -Wno-pre-c23-compat
         - -Wno-declaration-after-statement
         - -Wno-padded
-        - -Wno-reserved-identifier
-        - -Wno-gnu-empty-struct
         - -Wno-unsafe-buffer-usage
+    Remove:
+        - -xobjective-c++-header

@@ -579,10 +579,9 @@ typedef struct { u64 b; } type_500;
     type_490, type_491, type_492, type_493, type_494, type_495, type_496, \
     type_497, type_498, type_499
 // clang-format on
-#define euo_flags static_implementation
 #include "../src/euo.h"
 
 int main() {
-    [[maybe_unused]] constexpr auto _ = euo_none();
+    [[maybe_unused]] constexpr auto _ = euo_none(type_123);
     return 0;
 }

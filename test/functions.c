@@ -11,8 +11,11 @@ typedef struct {
 } Str;
 
 #define euo_error_type u32
-#define euo_types u32, u64, u8, u8 const*, u16*, bool, Str
-#define euo_flags static_implementation, short_names, no_pedantic
+#define euo_types u32, u64, u8, u8 const*, u16*
+#define euo_flags euo_short_names, euo_gnu
+#include "../src/euo.h"
+
+#define euo_types bool, Str
 #include "../src/euo.h"
 
 static Err(u64) err_union() {
