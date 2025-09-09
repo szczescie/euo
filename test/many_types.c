@@ -582,6 +582,6 @@ typedef struct { u64 b; } type_500;
 #include "../src/euo.h"
 
 int main() {
-    [[maybe_unused]] constexpr auto _ = euo_none(type_123);
-    return 0;
+    auto const something = euo_err(type_123, 0);
+    return euo_errcode(something);
 }

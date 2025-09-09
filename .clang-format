@@ -6,3 +6,48 @@ Cpp11BracedListStyle: false
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
 PointerAlignment: Left
+StatementMacros:
+    - _euo_map
+    - _euo_repeat
+    - _euo_definitions
+    - _euo_def_type
+    - _euo_def_err_union
+    - _euo_def_optional
+    - _euo_def_err_union_opt
+    - _euo_def_none
+    - _euo_def_ok
+    - _euo_def_ok_opt
+    - _euo_def_err
+    - _euo_def_err_opt
+    - _euo_def_some
+    - _euo_def_failed
+    - _euo_def_failed_opt
+    - _euo_def_absent
+    - _euo_def_val_err_union
+    - _euo_def_val_err_union_opt
+    - _euo_def_val_optional
+    - _euo_def_errcode
+    - _euo_def_errcode_opt
+    - _euo_def_identity
+    - _euo_def_identity_opt
+    - _euo_pop
+    - _euo_definitions_void
+    - _euo_def_err_union_void
+    - _euo_def_err_union_opt_void
+    - _euo_def_optional_void
+    - _euo_def_ok_void
+    - _euo_def_ok_opt_void
+    - _euo_def_err_void
+    - _euo_def_err_opt_void
+    - _euo_def_some_void
+    - _euo_def_none_void
+    - _euo_def_failed_void
+    - _euo_def_failed_opt_void
+    - _euo_def_absent_void
+    - _euo_def_val_err_union_void
+    - _euo_def_val_err_union_opt_void
+    - _euo_def_val_optional_void
+    - _euo_def_errcode_void
+    - _euo_def_errcode_opt_void
+    - _euo_def_identity_void
+    - _euo_def_identity_opt_void

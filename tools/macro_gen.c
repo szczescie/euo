@@ -14,7 +14,7 @@ typedef uint64_t u64;
 }
 
 [[gnu::format(printf, 1, 2)]] static void print(
-    register char const* format,
+    char const* format,
     ...
 ) {
     va_list args;
@@ -27,7 +27,7 @@ constexpr auto max_item_len = 32;
 
 [[gnu::format(printf, 2, 3)]] static u64 buf_print(
     register char* restrict buf,
-    register char const* format,
+    char const* format,
     ...
 ) {
     va_list args;
@@ -93,11 +93,24 @@ int main(
 
     print(
         "#define _euo_map_0(...)\n"
-        "#define _euo_map_1(f, x, ...) f(0, x)\n"
+        "#define _euo_map_1(macro, item, ...) \\\n"
+        "    macro(0, item)\n"
     );
     for (register u64 i = 2; i <= max_types; i += 1) print(
-        "#define _euo_map_%lu(f, x, ...)"
-        " _euo_map_%lu(f, __VA_ARGS__) f(%lu, x)\n",
+        "#define _euo_map_%lu(macro, item, ...) \\\n"
+        "    _euo_map_%lu(macro, __VA_ARGS__) macro(%lu, item)\n",
+        i, i - 1, i - 1
+    );
+    print("\n");
+
+    print(
+        "#define _euo_repeat_0(...)\n"
+        "#define _euo_repeat_1(macro, arg) \\\n"
+        "    macro(0, arg)\n"
+    );
+    for (register u64 i = 2; i <= max_types; i += 1) print(
+        "#define _euo_repeat_%lu(macro, arg) \\\n"
+        "    macro(%lu, arg) _euo_repeat_%lu(macro, arg)\n",
         i, i - 1, i - 1
     );
 

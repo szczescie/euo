@@ -10,127 +10,133 @@ typedef struct {
     char const* buf;
 } Str;
 
-#define euo_error_type u32
-#define euo_types u32, u64, u8, u8 const*, u16*
-#define euo_flags euo_short_names, euo_gnu
+#define euo_types u32, u64, u8, char const*, u16*
+#define euo_flags euo_short_names
 #include "../src/euo.h"
 
-#define euo_types bool, Str
+#define euo_types bool, Str, u32, int, double
 #include "../src/euo.h"
 
-static Err(u64) err_union() {
-    static_assert(sizeof(Err(u64)) == 2 * sizeof(u64));
-    {
-        Err(u32) const u32_or_err = ok((u32)0xaaaaaaa);
-        bool const failure = failed(u32_or_err);
-        assert(!failure);
-        u64 const unwrapped = val(u32_or_err);
-        assert(unwrapped == 0xaaaaaaa);
+static Err(void) tests() {
+    { // data validation: structure size
+        static_assert(sizeof(Err(u64)) == 2 * sizeof(u64));
+        static_assert(sizeof(Opt(u16*)) == 2 * sizeof(u16*));
+        static_assert(sizeof(Err(Opt(u32))) == sizeof(Err(u32)));
     }
-    {
+    { // data validation: error union, succeeded
+        Err(u32) const u32_or_err = ok((u32)0xaaaaaaa);
+        assert(!failed(u32_or_err));
+        assert(val(u32_or_err) == 0xaaaaaaa);
+        Err(void) const void_or_err = ok();
+        assert(!failed(void_or_err));
+    }
+    { // data validation: error union, failed
         Err(u64) const u64_or_err = err(u64, 404);
         assert(failed(u64_or_err));
-        u32 const error_code = errcode(u64_or_err);
-        assert(error_code == 404);
-        return u64_or_err;
+        assert(errcode(u64_or_err) == 404);
+        Err(void) const void_or_err = err(void, 404);
+        assert(failed(void_or_err));
     }
-}
-
-static Opt(u16*) optional() {
-    static_assert(sizeof(Err(u16*)) == 2 * sizeof(u16*));
-    {
+    { // data validation: error union, try
+        double const value = try(void, ok(1.0));
+        assert(value == 1.0);
+    }
+    { // data validation: optional, present
         Opt(u8) const u8_or_null = some((u8)0xb);
-        bool const absence = absent(u8_or_null);
-        assert(!absence);
-        u8 const unwrapped = val(u8_or_null);
-        assert(unwrapped == (u8)0xb);
+        assert(!absent(u8_or_null));
+        assert(val(u8_or_null) == (u8)0xb);
+        Opt(void) const void_or_null = some();
+        assert(!absent(void_or_null));
     }
-    {
+    { // data validation: optional, absent
         Opt(u16*) const u16_ptr_or_null = none(u16*);
-        bool const absence = absent(u16_ptr_or_null);
-        assert(absence);
-        return u16_ptr_or_null;
+        assert(absent(u16_ptr_or_null));
+        Opt(void) const void_or_null = none(void);
+        assert(absent(void_or_null));
     }
-}
-
-static Err(Opt(u8 const*)) err_optional() {
-    static_assert(sizeof(Err(Opt(u8 const*))) == sizeof(Err(u8 const*)));
-    {
+    { // data validation: error union optional, succeded + present
         Err(Opt(u32)) const u32_or_null_or_err = ok(some((u32)0xaaaaaaa));
-        bool const failure = failed(u32_or_null_or_err);
-        assert(!failure);
+        assert(!failed(u32_or_null_or_err));
         Opt(u32) const u32_or_null = val(u32_or_null_or_err);
-        bool const absence = absent(u32_or_null);
-        assert(!absence);
-        u32 const unwrapped = val(u32_or_null);
-        assert(unwrapped == 0xaaaaaaa);
+        assert(!absent(u32_or_null));
+        assert(val(u32_or_null) == 0xaaaaaaa);
+        Err(Opt(void)) const void_or_null_or_err = ok(some());
+        assert(!failed(void_or_null_or_err));
+        Opt(void) const void_or_null = val(void_or_null_or_err);
+        assert(!absent(void_or_null));
     }
-    {
+    { // data validation: error union optional, succeded + absent
         Err(Opt(u64)) const u64_or_null_or_err = ok(none(u64));
-        bool const failure = failed(u64_or_null_or_err);
-        assert(!failure);
+        assert(!failed(u64_or_null_or_err));
         Opt(u64) const u64_or_null = val(u64_or_null_or_err);
-        bool const absence = absent(u64_or_null);
-        assert(absence);
+        assert(absent(u64_or_null));
+        Err(Opt(void)) const void_or_null_or_err = ok(none(void));
+        assert(!failed(void_or_null_or_err));
+        Opt(void) const void_or_null = val(void_or_null_or_err);
+        assert(absent(void_or_null));
     }
-    {
-        Err(Opt(u8 const*)) str_or_null_or_err = err(Opt(u8 const*), 503);
-        bool const failure = failed(str_or_null_or_err);
-        assert(failure);
-        return str_or_null_or_err;
+    { // data validation: error union optional, failed
+        Err(Opt(char const*)) str_or_null_or_err = err(Opt(char const*), 503);
+        assert(failed(str_or_null_or_err));
+        Err(Opt(void)) void_or_null_or_err = err(Opt(void), 503);
+        assert(failed(void_or_null_or_err));
     }
-}
-
-static Err(bool) err_union_try() {
-    u32 const number = __extension__ try(bool, ok((u32)0xaaaaaaa));
-    assert(number == 0xaaaaaaa);
-    (void)__extension__ try(bool, err_union());
-    assert(false);
-}
-
-static Err(bool) err_optional_try() {
-    [[maybe_unused]] auto const _ = __extension__ try(bool, ok(some(true)));
-    return ok(true);
-}
-
-static Err() err_union_void() {
-    return true ? ok() : err(1);
-}
-
-static Opt() optional_void() {
-    return true ? some() : none();
-}
-
-static Err(Opt()) err_optional_void() {
-    return true ? ok(some()) : ok(none());
-}
-
-static Err() err_union_try_void() {
-    [[maybe_unused]] auto const _ = __extension__ try(ok());
+    { // data validation: error union optional, try
+        Opt(double) const double_or_null = try(void, ok(some(2.0)));
+        double const value = val(double_or_null);
+        assert(value == 2.0);
+    }
+    { // type checking: assignment, int
+        [[maybe_unused]] Err(int) const a = ok(0);
+        [[maybe_unused]] Err(int) const b = err(int, 1);
+        [[maybe_unused]] Err(Opt(int)) const c = ok(none(int));
+        [[maybe_unused]] Err(Opt(int)) const d = err(Opt(int), 12);
+        [[maybe_unused]] Opt(int) const e = some(0);
+        [[maybe_unused]] Opt(int) const f = none(int);
+        [[maybe_unused]] bool const g = failed(ok(0));
+        [[maybe_unused]] bool const h = failed(ok(none(int)));
+        [[maybe_unused]] bool const i = absent(none(int));
+        [[maybe_unused]] int const j = val(ok(0));
+        [[maybe_unused]] Opt(int) const k = val(ok(some(0)));
+        [[maybe_unused]] int const l = val(some(0));
+        [[maybe_unused]] unsigned int const m = errcode(err(int, 12));
+        [[maybe_unused]] unsigned int const n = errcode(err(Opt(int), 1));
+    }
+    { // type checking: assignment, void
+        [[maybe_unused]] Err(void) const a = ok((void)0);
+        [[maybe_unused]] Err(void) const b = err(void, 1);
+        [[maybe_unused]] Err(Opt(void)) const c = ok(none(void));
+        [[maybe_unused]] Err(Opt(void)) const d = err(Opt(void), 12);
+        [[maybe_unused]] Opt(void) const e = some((void)0);
+        [[maybe_unused]] Opt(void) const f = none(void);
+        [[maybe_unused]] bool const g = failed(ok((void)0));
+        [[maybe_unused]] bool const h = failed(ok(none(void)));
+        [[maybe_unused]] bool const i = absent(none(void));
+        [[maybe_unused]] void* const j = (typeof(val(ok((void)0)))*){};
+        [[maybe_unused]] Opt(void) const k = val(ok(some((void)0)));
+        [[maybe_unused]] void* const l = (typeof(val(some((void)0)))*){};
+        [[maybe_unused]] unsigned int const m = errcode(err(void, 12));
+        [[maybe_unused]] unsigned int const n = errcode(err(Opt(void), 1));
+    }
+    { // type checking: comma
+        [[maybe_unused]] auto const a = ok((int[]){ 0, 1 }[1]);
+        [[maybe_unused]] auto const b = err(int, (unsigned int[]){ 0, 1 }[1]);
+        [[maybe_unused]] auto const c = some((int[]){ 0, 1 }[1]);
+        [[maybe_unused]] auto const d = failed((Err(int)[]){ ok(0), ok(1) }[1]);
+        [[maybe_unused]] auto const e = failed((Err(int)[]){ ok(0), ok(1) }[1]);
+        [[maybe_unused]] auto const f =
+            absent((Opt(int)[]){ some(0), some(1) }[1]);
+        [[maybe_unused]] auto const g =
+            val((Err(int)[]){ ok(0), ok(1) }[1]);
+        [[maybe_unused]] auto const h =
+            errcode((Err(int)[]){ err(int, 0), err(int, 1) }[1]);
+        [[maybe_unused]] auto const i =
+            try(void, (Err(int)[]){ ok(0), ok(1) }[1]);
+    }
     return ok();
 }
 
-static u32 some_code([[maybe_unused]] u8 a, [[maybe_unused]] u8 b) {
-    return 444;
-}
-
-static Err(Str) err_union_comma() {
-    return true ? ok((Str){ 1, "b" }) : err(Str, some_code(0, 0));
-}
-
-static Err(Str) err_union_try_comma() {
-    return ok(__extension__ try(Str, err(Str, some_code(0, 0))));
-}
-
 int main() {
-    (void)err_union();
-    (void)optional();
-    (void)err_optional();
-    (void)err_union_void();
-    (void)optional_void();
-    (void)err_optional_void();
-    (void)err_union_try();
-    (void)err_union_try_void();
-    (void)err_union_comma();
-    (void)err_union_try_comma();
+    if (failed(tests())) return 1;
+    return 0;
 }
