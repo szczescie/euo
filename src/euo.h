@@ -4192,31 +4192,30 @@ _euo_map(_euo_push, _euo_local_names)
     #define _euo_assert(ok) assert(ok)
 #endif
 
-// TODO: turn into function macros
 #if _euo_flag(euo_short_names)
-    #define Err _euo_Err
-    #define Opt _euo_Opt
-    #define ok _euo_ok
-    #define err _euo_err
-    #define some _euo_some
-    #define none _euo_none
-    #define failed _euo_failed
-    #define absent _euo_absent
-    #define val _euo_val
-    #define errcode _euo_errcode
-    #define try _euo_try
+    #define Err(T) _euo_Err(T)
+    #define Opt(T) _euo_Opt(T)
+    #define ok(...) _euo_ok(__VA_ARGS__)
+    #define err(T, ...) _euo_err(T, __VA_ARGS__)
+    #define some(...) _euo_some(__VA_ARGS__)
+    #define none(T) _euo_none(T)
+    #define failed(...) _euo_failed(__VA_ARGS__)
+    #define absent(...) _euo_absent(__VA_ARGS__)
+    #define val(...) _euo_val(__VA_ARGS__)
+    #define errcode(...) _euo_errcode(__VA_ARGS__)
+    #define try(T, ...) _euo_try(T, __VA_ARGS__)
 #else
-    #define euo_Err _euo_Err
-    #define euo_Opt _euo_Opt
-    #define euo_ok _euo_ok
-    #define euo_err _euo_err
-    #define euo_some _euo_some
-    #define euo_none _euo_none
-    #define euo_failed _euo_failed
-    #define euo_absent _euo_absent
-    #define euo_val _euo_val
-    #define euo_errcode _euo_errcode
-    #define euo_try _euo_try
+    #define euo_Err(T) _euo_Err(T)
+    #define euo_Opt(T) _euo_Opt(T)
+    #define euo_ok(...) _euo_ok(__VA_ARGS__)
+    #define euo_err(T, ...) _euo_err(T, __VA_ARGS__)
+    #define euo_some(...) _euo_some(__VA_ARGS__)
+    #define euo_none(T) _euo_none(T)
+    #define euo_failed(...) _euo_failed(__VA_ARGS__)
+    #define euo_absent(...) _euo_absent(__VA_ARGS__)
+    #define euo_val(...) _euo_val(__VA_ARGS__)
+    #define euo_errcode(...) _euo_errcode(__VA_ARGS__)
+    #define euo_try(T, ...) _euo_try(T, __VA_ARGS__)
 #endif
 
 #if !defined _euo_void_defined
