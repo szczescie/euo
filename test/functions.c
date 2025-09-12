@@ -18,11 +18,6 @@ typedef struct {
 #include "../src/euo.h"
 
 static Err(void) tests() {
-    { // data validation: structure size
-        static_assert(sizeof(Err(u64)) == 2 * sizeof(u64));
-        static_assert(sizeof(Opt(u16*)) == 2 * sizeof(u16*));
-        static_assert(sizeof(Err(Opt(u32))) == sizeof(Err(u32)));
-    }
     { // data validation: error union, succeeded
         Err(u32) const u32_or_err = ok((u32)0xaaaaaaa);
         assert(!failed(u32_or_err));
@@ -132,6 +127,11 @@ static Err(void) tests() {
             errcode((Err(int)[]){ err(int, 0), err(int, 1) }[1]);
         [[maybe_unused]] auto const i =
             try(void, (Err(int)[]){ ok(0), ok(1) }[1]);
+    }
+    { // type checking: structure size
+        static_assert(sizeof(Err(u64)) == 2 * sizeof(u64));
+        static_assert(sizeof(Opt(u16*)) == 2 * sizeof(u16*));
+        static_assert(sizeof(Err(Opt(u32))) == sizeof(Err(u32)));
     }
     return ok();
 }

@@ -3850,10 +3850,6 @@
                 .payload = { .value = value } \
             };                                \
         }
-    #define _euo_def_ok_void                                     \
-        _euo_attr _euo_ErrUnionVoid _euo_ok_void(...) {          \
-            return (_euo_ErrUnionVoid){ .error_active = false }; \
-        }
     #define _euo_def_ok_opt                            \
         _euo_attr _euo_err_union_opt_c _euo_ok_opt_c(  \
             register _euo_optional_c const optional    \
@@ -3863,6 +3859,10 @@
                 .null_active = optional.null_active,   \
                 .payload = { .value = optional.value } \
             };                                         \
+        }
+    #define _euo_def_ok_void                                     \
+        _euo_attr _euo_ErrUnionVoid _euo_ok_void(...) {          \
+            return (_euo_ErrUnionVoid){ .error_active = false }; \
         }
     #define _euo_def_ok_opt_void                      \
         _euo_attr _euo_ErrOptVoid _euo_ok_opt_void(   \
@@ -4097,7 +4097,9 @@
             return _euo_err(T, _euo_errcode(_euo_err_union));            \
         _euo_val(_euo_err_union);                                        \
     })
-
+// #endregion
+    
+// #region interface details
     #define _euo_pragma(directive) _Pragma(#directive)
     #define _euo_push(_, name) _euo_pragma(push_macro(#name))
     #define _euo_pop(_, name) _euo_pragma(pop_macro(#name))
@@ -4144,11 +4146,8 @@
         _euo_def_errcode_opt_void       \
         _euo_def_identity_void          \
         _euo_def_identity_opt_void
-// #endregion
 
-// #region interface details
     #define _euo_flag_euo_short_names 1
-    #define _euo_flag_euo_no_assert 2
 
     #define _euo_or(_, flag) | _euo_flag_##flag
     #define _euo_flag_bits (0 _euo_map(_euo_or, euo_flags))
@@ -4184,8 +4183,7 @@ _euo_map(_euo_push, _euo_local_names)
     #define euo_flags
 #endif
 
-// TODO: move assert out of functions
-#if _euo_flag(euo_no_assert) || defined NDEBUG
+#if defined NDEBUG
     #define _euo_assert(ok) ((ok) ? (void)0 : __builtin_unreachable())
 #else
     #include <assert.h>
